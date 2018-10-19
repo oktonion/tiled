@@ -32,14 +32,15 @@ class QtVariantPropertyManager;
 
 namespace Tiled {
 
-class Object;
+class GroupLayer;
 class ImageLayer;
 class Layer;
 class Map;
 class MapObject;
+class Object;
 class ObjectGroup;
-class TileLayer;
 class Tile;
+class TileLayer;
 class Tileset;
 
 namespace Internal {
@@ -83,6 +84,8 @@ public:
      */
     void editCustomProperty(const QString &name);
 
+    QSize sizeHint() const override;
+
 protected:
     bool event(QEvent *event) override;
 
@@ -97,12 +100,14 @@ private slots:
     void tileChanged(Tile *tile);
     void tileTypeChanged(Tile *tile);
     void terrainChanged(Tileset *tileset, int index);
+    void wangSetChanged(Tileset *tileset, int index);
 
     void propertyAdded(Object *object, const QString &name);
     void propertyRemoved(Object *object, const QString &name);
     void propertyChanged(Object *object, const QString &name);
     void propertiesChanged(Object *object);
     void selectedObjectsChanged();
+    void selectedLayersChanged();
     void selectedTilesChanged();
 
     void objectTypesChanged();
@@ -121,6 +126,7 @@ private:
         HeightProperty,
         RotationProperty,
         VisibleProperty,
+        LockedProperty,
         OpacityProperty,
         TextProperty,
         TextAlignmentProperty,
@@ -151,7 +157,12 @@ private:
         TileProbabilityProperty,
         ColumnCountProperty,
         IdProperty,
-        CustomProperty
+        EdgeCountProperty,
+        CornerCountProperty,
+        WangColorProbabilityProperty,
+        CustomProperty,
+        InfiniteProperty,
+        TemplateProperty
     };
 
     void addMapProperties();
@@ -164,18 +175,23 @@ private:
     void addTilesetProperties();
     void addTileProperties();
     void addTerrainProperties();
+    void addWangSetProperties();
+    void addWangColorProperties();
 
     void applyMapValue(PropertyId id, const QVariant &val);
     void applyMapObjectValue(PropertyId id, const QVariant &val);
     QUndoCommand *applyMapObjectValueTo(PropertyId id, const QVariant &val, MapObject *mapObject);
     void applyLayerValue(PropertyId id, const QVariant &val);
-    void applyTileLayerValue(PropertyId id, const QVariant &val);
-    void applyObjectGroupValue(PropertyId id, const QVariant &val);
-    void applyImageLayerValue(PropertyId id, const QVariant &val);
-    void applyGroupLayerValue(PropertyId id, const QVariant &val);
+    QUndoCommand *applyLayerValueTo(PropertyId id, const QVariant &val, Layer *layer);
+    QUndoCommand *applyTileLayerValueTo(PropertyId id, const QVariant &val, TileLayer *tileLayer);
+    QUndoCommand *applyObjectGroupValueTo(PropertyId id, const QVariant &val, ObjectGroup *objectGroup);
+    QUndoCommand *applyImageLayerValueTo(PropertyId id, const QVariant &val, ImageLayer *imageLayer);
+    QUndoCommand *applyGroupLayerValueTo(PropertyId id, const QVariant &val, GroupLayer *groupLayer);
     void applyTilesetValue(PropertyId id, const QVariant &val);
     void applyTileValue(PropertyId id, const QVariant &val);
     void applyTerrainValue(PropertyId id, const QVariant &val);
+    void applyWangSetValue(PropertyId id, const QVariant &val);
+    void applyWangColorValue(PropertyId id, const QVariant &val);
 
     QtVariantProperty *createProperty(PropertyId id,
                                       int type,
@@ -187,15 +203,20 @@ private:
                                    const QString &name,
                                    QtProperty *parent);
 
+    QtVariantProperty *createCustomProperty(const QString &name, const QVariant &value);
+    void deleteCustomProperty(QtVariantProperty *property);
+    void setCustomPropertyValue(QtVariantProperty *property, const QVariant &value);
+
     void addProperties();
     void removeProperties();
     void updateProperties();
     void updateCustomProperties();
+    void updateCustomPropertyColor(const QString &name);
+
     void retranslateUi();
+
     bool mUpdating;
-
-    void updatePropertyColor(const QString &name);
-
+    int mMapObjectFlags;
     Object *mObject;
     Document *mDocument;
     MapDocument *mMapDocument;
@@ -224,12 +245,6 @@ private:
 inline Object *PropertyBrowser::object() const
 {
     return mObject;
-}
-
-inline void PropertyBrowser::retranslateUi()
-{
-    removeProperties();
-    addProperties();
 }
 
 } // namespace Internal

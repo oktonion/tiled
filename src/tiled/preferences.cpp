@@ -28,7 +28,7 @@
 #include "savefile.h"
 #include "tilesetmanager.h"
 
-#include <QDebug>
+#include <QDir>
 #include <QFileInfo>
 #include <QSettings>
 #include <QStandardPaths>
@@ -64,7 +64,14 @@ Preferences::Preferences()
     mSafeSavingEnabled = boolValue("SafeSavingEnabled", true);
     mReloadTilesetsOnChange = boolValue("ReloadTilesets", true);
     mStampsDirectory = stringValue("StampsDirectory");
+    mTemplatesDirectory = stringValue("TemplatesDirectory");
     mObjectTypesFile = stringValue("ObjectTypesFile");
+    mSettings->endGroup();
+
+    mSettings->beginGroup(QLatin1String("Export"));
+    setExportOption(EmbedTilesets, boolValue("EmbedTilesets", false));
+    setExportOption(DetachTemplateInstances, boolValue("DetachTemplateInstances", false));
+    setExportOption(ResolveObjectTypesAndProperties, boolValue("ResolveObjectTypesAndProperties", false));
     mSettings->endGroup();
 
     SaveFile::setSafeSavingEnabled(mSafeSavingEnabled);
@@ -81,11 +88,14 @@ Preferences::Preferences()
     mGridFine = intValue("GridFine", 4);
     mObjectLineWidth = realValue("ObjectLineWidth", 2);
     mHighlightCurrentLayer = boolValue("HighlightCurrentLayer");
+    mHighlightHoveredObject = boolValue("HighlightHoveredObject", true);
     mShowTilesetGrid = boolValue("ShowTilesetGrid", true);
     mLanguage = stringValue("Language");
     mUseOpenGL = boolValue("OpenGL");
+    mWheelZoomsByDefault = boolValue("WheelZoomsByDefault");
     mObjectLabelVisibility = static_cast<ObjectLabelVisiblity>
             (intValue("ObjectLabelVisibility", AllObjectLabels));
+    mLabelForHoveredObject = boolValue("LabelForHoveredObject", false);
 #if defined(Q_OS_MAC)
     mApplicationStyle = static_cast<ApplicationStyle>
             (intValue("ApplicationStyle", SystemDefaultStyle));
@@ -105,7 +115,8 @@ Preferences::Preferences()
 
     // Retrieve defined object types
     ObjectTypesSerializer objectTypesSerializer;
-    bool success = objectTypesSerializer.readObjectTypes(objectTypesFile(), mObjectTypes);
+    ObjectTypes objectTypes;
+    bool success = objectTypesSerializer.readObjectTypes(objectTypesFile(), objectTypes);
 
     // For backwards compatibilty, read in object types from settings
     if (!success) {
@@ -117,12 +128,13 @@ Preferences::Preferences()
         if (!names.isEmpty()) {
             const int count = qMin(names.size(), colors.size());
             for (int i = 0; i < count; ++i)
-                mObjectTypes.append(ObjectType(names.at(i), QColor(colors.at(i))));
+                objectTypes.append(ObjectType(names.at(i), QColor(colors.at(i))));
         }
     } else {
         mSettings->remove(QLatin1String("ObjectTypes"));
     }
 
+    Object::setObjectTypes(objectTypes);
 
     mSettings->beginGroup(QLatin1String("Automapping"));
     mAutoMapDrawing = boolValue("WhileDrawing");
@@ -185,6 +197,16 @@ void Preferences::setObjectLabelVisibility(ObjectLabelVisiblity visibility)
     mObjectLabelVisibility = visibility;
     mSettings->setValue(QLatin1String("Interface/ObjectLabelVisibility"), visibility);
     emit objectLabelVisibilityChanged(visibility);
+}
+
+void Preferences::setLabelForHoveredObject(bool enabled)
+{
+    if (mLabelForHoveredObject == enabled)
+        return;
+
+    mLabelForHoveredObject = enabled;
+    mSettings->setValue(QLatin1String("Interface/LabelForHoveredObject"), enabled);
+    emit labelForHoveredObjectChanged(enabled);
 }
 
 void Preferences::setApplicationStyle(ApplicationStyle style)
@@ -322,6 +344,17 @@ void Preferences::setHighlightCurrentLayer(bool highlight)
     emit highlightCurrentLayerChanged(mHighlightCurrentLayer);
 }
 
+void Preferences::setHighlightHoveredObject(bool highlight)
+{
+    if (mHighlightHoveredObject == highlight)
+        return;
+
+    mHighlightHoveredObject = highlight;
+    mSettings->setValue(QLatin1String("Interface/HighlightHoveredObject"),
+                        mHighlightHoveredObject);
+    emit highlightHoveredObjectChanged(mHighlightHoveredObject);
+}
+
 void Preferences::setShowTilesetGrid(bool showTilesetGrid)
 {
     if (mShowTilesetGrid == showTilesetGrid)
@@ -331,11 +364,6 @@ void Preferences::setShowTilesetGrid(bool showTilesetGrid)
     mSettings->setValue(QLatin1String("Interface/ShowTilesetGrid"),
                         mShowTilesetGrid);
     emit showTilesetGridChanged(mShowTilesetGrid);
-}
-
-Map::LayerDataFormat Preferences::layerDataFormat() const
-{
-    return mLayerDataFormat;
 }
 
 void Preferences::setLayerDataFormat(Map::LayerDataFormat
@@ -349,11 +377,6 @@ void Preferences::setLayerDataFormat(Map::LayerDataFormat
                         mLayerDataFormat);
 }
 
-Map::RenderOrder Preferences::mapRenderOrder() const
-{
-    return mMapRenderOrder;
-}
-
 void Preferences::setMapRenderOrder(Map::RenderOrder mapRenderOrder)
 {
     if (mMapRenderOrder == mapRenderOrder)
@@ -362,11 +385,6 @@ void Preferences::setMapRenderOrder(Map::RenderOrder mapRenderOrder)
     mMapRenderOrder = mapRenderOrder;
     mSettings->setValue(QLatin1String("Storage/MapRenderOrder"),
                         mMapRenderOrder);
-}
-
-bool Preferences::dtdEnabled() const
-{
-    return mDtdEnabled;
 }
 
 void Preferences::setDtdEnabled(bool enabled)
@@ -382,9 +400,28 @@ void Preferences::setSafeSavingEnabled(bool enabled)
     SaveFile::setSafeSavingEnabled(enabled);
 }
 
-QString Preferences::language() const
+void Preferences::setExportOption(Preferences::ExportOption option, bool value)
 {
-    return mLanguage;
+#if QT_VERSION >= 0x050700
+    mExportOptions.setFlag(option, value);
+#else
+    if (value)
+        mExportOptions |= option;
+    else
+        mExportOptions &= ~option;
+#endif
+
+    switch (option) {
+    case EmbedTilesets:
+        mSettings->setValue(QLatin1String("Export/EmbedTilesets"), value);
+        break;
+    case DetachTemplateInstances:
+        mSettings->setValue(QLatin1String("Export/DetachTemplateInstances"), value);
+        break;
+    case ResolveObjectTypesAndProperties:
+        mSettings->setValue(QLatin1String("Export/ResolveObjectTypesAndProperties"), value);
+        break;
+    }
 }
 
 void Preferences::setLanguage(const QString &language)
@@ -398,11 +435,6 @@ void Preferences::setLanguage(const QString &language)
 
     LanguageManager::instance()->installTranslators();
     emit languageChanged();
-}
-
-bool Preferences::reloadTilesetsOnChange() const
-{
-    return mReloadTilesetsOnChange;
 }
 
 void Preferences::setReloadTilesetsOnChanged(bool value)
@@ -431,7 +463,7 @@ void Preferences::setUseOpenGL(bool useOpenGL)
 
 void Preferences::setObjectTypes(const ObjectTypes &objectTypes)
 {
-    mObjectTypes = objectTypes;
+    Object::setObjectTypes(objectTypes);
     emit objectTypesChanged();
 }
 
@@ -443,6 +475,9 @@ static QString lastPathKey(Preferences::FileType fileType)
     case Preferences::ObjectTypesFile:
         key.append(QLatin1String("ObjectTypes"));
         break;
+    case Preferences::ObjectTemplateFile:
+        key.append(QLatin1String("ObjectTemplates"));
+        break;
     case Preferences::ImageFile:
         key.append(QLatin1String("Images"));
         break;
@@ -452,8 +487,9 @@ static QString lastPathKey(Preferences::FileType fileType)
     case Preferences::ExternalTileset:
         key.append(QLatin1String("ExternalTileset"));
         break;
-    default:
-        Q_ASSERT(false); // Getting here means invalid file type
+    case Preferences::WorldFile:
+        key.append(QLatin1String("WorldFile"));
+        break;
     }
 
     return key;
@@ -502,11 +538,6 @@ void Preferences::setAutomappingDrawing(bool enabled)
 {
     mAutoMapDrawing = enabled;
     mSettings->setValue(QLatin1String("Automapping/WhileDrawing"), enabled);
-}
-
-QString Preferences::mapsDirectory() const
-{
-    return mMapsDirectory;
 }
 
 void Preferences::setMapsDirectory(const QString &path)
@@ -567,15 +598,16 @@ QString Preferences::fileDialogStartLocation() const
  */
 void Preferences::addRecentFile(const QString &fileName)
 {
-    // Remember the file by its canonical file path
-    const QString canonicalFilePath = QFileInfo(fileName).canonicalFilePath();
+    // Remember the file by its absolute file path (not the canonical one,
+    // which avoids unexpected paths when symlinks are involved).
+    const QString absoluteFilePath = QDir::cleanPath(QFileInfo(fileName).absoluteFilePath());
 
-    if (canonicalFilePath.isEmpty())
+    if (absoluteFilePath.isEmpty())
         return;
 
     QStringList files = recentFiles();
-    files.removeAll(canonicalFilePath);
-    files.prepend(canonicalFilePath);
+    files.removeAll(absoluteFilePath);
+    files.prepend(absoluteFilePath);
     while (files.size() > MaxRecentFiles)
         files.removeLast();
 
@@ -606,7 +638,7 @@ void Preferences::setCheckForUpdates(bool on)
 void Preferences::setOpenLastFilesOnStartup(bool open)
 {
     if (mOpenLastFilesOnStartup == open)
-    	return;
+        return;
 
     mOpenLastFilesOnStartup = open;
     mSettings->setValue(QLatin1String("Startup/OpenLastFiles"), open);
@@ -640,6 +672,15 @@ void Preferences::setPluginEnabled(const QString &fileName, bool enabled)
 
     mSettings->setValue(QLatin1String("Plugins/Disabled"), disabledPlugins);
     mSettings->setValue(QLatin1String("Plugins/Enabled"), enabledPlugins);
+}
+
+void Preferences::setWheelZoomsByDefault(bool mode)
+{
+    if (mWheelZoomsByDefault == mode)
+        return;
+
+    mWheelZoomsByDefault = mode;
+    mSettings->setValue(QLatin1String("Interface/WheelZoomsByDefault"), mode);
 }
 
 bool Preferences::boolValue(const char *key, bool defaultValue) const
@@ -694,6 +735,25 @@ void Preferences::setStampsDirectory(const QString &stampsDirectory)
     mSettings->setValue(QLatin1String("Storage/StampsDirectory"), stampsDirectory);
 
     emit stampsDirectoryChanged(stampsDirectory);
+}
+
+QString Preferences::templatesDirectory() const
+{
+    if (mTemplatesDirectory.isEmpty())
+        return dataLocation() + QLatin1String("/templates");
+
+    return mTemplatesDirectory;
+}
+
+void Preferences::setTemplatesDirectory(const QString &templatesDirectory)
+{
+    if (mTemplatesDirectory == templatesDirectory)
+        return;
+
+    mTemplatesDirectory = templatesDirectory;
+    mSettings->setValue(QLatin1String("Storage/TemplatesDirectory"), templatesDirectory);
+
+    emit templatesDirectoryChanged(templatesDirectory);
 }
 
 QString Preferences::objectTypesFile() const

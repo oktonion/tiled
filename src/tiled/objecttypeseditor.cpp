@@ -44,7 +44,7 @@ namespace Internal {
 class ColorDelegate : public QStyledItemDelegate
 {
 public:
-    ColorDelegate(QObject *parent = nullptr)
+    explicit ColorDelegate(QObject *parent = nullptr)
         : QStyledItemDelegate(parent)
     { }
 
@@ -156,27 +156,27 @@ ObjectTypesEditor::ObjectTypesEditor(QWidget *parent)
             this, &ObjectTypesEditor::selectedObjectTypesChanged);
     connect(mObjectTypesModel, &ObjectTypesModel::modelReset,
             this, &ObjectTypesEditor::selectFirstType);
-    connect(mUi->objectTypesTable, SIGNAL(doubleClicked(QModelIndex)),
-            SLOT(objectTypeIndexClicked(QModelIndex)));
+    connect(mUi->objectTypesTable, &QAbstractItemView::doubleClicked,
+            this, &ObjectTypesEditor::objectTypeIndexClicked);
 
-    connect(mAddObjectTypeAction, SIGNAL(triggered()),
-            SLOT(addObjectType()));
-    connect(mRemoveObjectTypeAction, SIGNAL(triggered()),
-            SLOT(removeSelectedObjectTypes()));
+    connect(mAddObjectTypeAction, &QAction::triggered,
+            this, &ObjectTypesEditor::addObjectType);
+    connect(mRemoveObjectTypeAction, &QAction::triggered,
+            this, &ObjectTypesEditor::removeSelectedObjectTypes);
 
-    connect(mAddPropertyAction, SIGNAL(triggered()),
-            SLOT(addProperty()));
-    connect(mRemovePropertyAction, SIGNAL(triggered()),
-            SLOT(removeProperty()));
-    connect(mRenamePropertyAction, SIGNAL(triggered()),
-            SLOT(renameProperty()));
+    connect(mAddPropertyAction, &QAction::triggered,
+            this, &ObjectTypesEditor::openAddPropertyDialog);
+    connect(mRemovePropertyAction, &QAction::triggered,
+            this, &ObjectTypesEditor::removeProperty);
+    connect(mRenamePropertyAction, &QAction::triggered,
+            this, &ObjectTypesEditor::renameProperty);
 
-    connect(mUi->actionChooseFile, SIGNAL(triggered()),
-            SLOT(chooseObjectTypesFile()));
-    connect(mUi->actionImport, SIGNAL(triggered()),
-            SLOT(importObjectTypes()));
-    connect(mUi->actionExport, SIGNAL(triggered()),
-            SLOT(exportObjectTypes()));
+    connect(mUi->actionChooseFile, &QAction::triggered,
+            this, &ObjectTypesEditor::chooseObjectTypesFile);
+    connect(mUi->actionImport, &QAction::triggered,
+            this, &ObjectTypesEditor::importObjectTypes);
+    connect(mUi->actionExport, &QAction::triggered,
+            this, &ObjectTypesEditor::exportObjectTypes);
 
     connect(mObjectTypesModel, &ObjectTypesModel::dataChanged,
             this, &ObjectTypesEditor::applyObjectTypes);
@@ -191,8 +191,7 @@ ObjectTypesEditor::ObjectTypesEditor(QWidget *parent)
     connect(mUi->propertiesView, &QtTreePropertyBrowser::currentItemChanged,
             this, &ObjectTypesEditor::currentItemChanged);
 
-    Preferences *prefs = Preferences::instance();
-    mObjectTypesModel->setObjectTypes(prefs->objectTypes());
+    mObjectTypesModel->setObjectTypes(Object::objectTypes());
 
     retranslateUi();
 }
@@ -234,12 +233,10 @@ void ObjectTypesEditor::retranslateUi()
 
 void ObjectTypesEditor::addObjectType()
 {
-    const int newRow = mObjectTypesModel->objectTypes().size();
-    mObjectTypesModel->appendNewObjectType();
+    const QModelIndex newIndex = mObjectTypesModel->addNewObjectType();
 
     // Select and focus the new row and ensure it is visible
     QItemSelectionModel *sm = mUi->objectTypesTable->selectionModel();
-    const QModelIndex newIndex = mObjectTypesModel->index(newRow, 0);
     sm->select(newIndex,
                QItemSelectionModel::ClearAndSelect |
                QItemSelectionModel::Rows);
@@ -293,7 +290,7 @@ void ObjectTypesEditor::applyObjectTypes()
     }
 }
 
-void ObjectTypesEditor::applyProperty(const QString &name, const QVariant &value)
+void ObjectTypesEditor::applyPropertyToSelectedTypes(const QString &name, const QVariant &value)
 {
     const auto selectionModel = mUi->objectTypesTable->selectionModel();
     const auto selectedRows = selectionModel->selectedRows();
@@ -307,7 +304,7 @@ void ObjectTypesEditor::applyProperty(const QString &name, const QVariant &value
     applyObjectTypes();
 }
 
-void ObjectTypesEditor::removeProperty(const QString &name)
+void ObjectTypesEditor::removePropertyFromSelectedTypes(const QString &name)
 {
     const auto selectionModel = mUi->objectTypesTable->selectionModel();
     const auto selectedRows = selectionModel->selectedRows();
@@ -413,7 +410,7 @@ void ObjectTypesEditor::exportObjectTypes()
     prefs->setLastPath(Preferences::ObjectTypesFile, fileName);
 
     ObjectTypesSerializer serializer;
-    if (!serializer.writeObjectTypes(fileName, prefs->objectTypes())) {
+    if (!serializer.writeObjectTypes(fileName, Object::objectTypes())) {
         QMessageBox::critical(this, tr("Error Writing Object Types"),
                               serializer.errorString());
     }
@@ -465,8 +462,10 @@ void ObjectTypesEditor::propertyValueChanged(QtProperty *property,
 {
     if (mUpdating)
         return;
+    if (!mUi->propertiesView->topLevelItem(property))
+        return;
 
-    applyProperty(property->propertyName(), value);
+    applyPropertyToSelectedTypes(property->propertyName(), value);
 }
 
 QtVariantProperty *ObjectTypesEditor::createProperty(int type,
@@ -487,7 +486,7 @@ QtVariantProperty *ObjectTypesEditor::createProperty(int type,
     return property;
 }
 
-void ObjectTypesEditor::addProperty()
+void ObjectTypesEditor::openAddPropertyDialog()
 {
     AddPropertyDialog dialog(window());
     if (dialog.exec() == AddPropertyDialog::Accepted)
@@ -499,12 +498,12 @@ void ObjectTypesEditor::addProperty(const QString &name, const QVariant &value)
     if (name.isEmpty())
         return;
 
-    applyProperty(name, value);
+    applyPropertyToSelectedTypes(name, value);
     updateProperties();
-    editCustomProperty(name);
+    editProperty(name);
 }
 
-void ObjectTypesEditor::editCustomProperty(const QString &name)
+void ObjectTypesEditor::editProperty(const QString &name)
 {
     QtVariantProperty *property = mNameToProperty.value(name);
     if (!property)
@@ -535,7 +534,7 @@ void ObjectTypesEditor::removeProperty()
     mProperties.remove(name);
     delete mNameToProperty.take(name);
 
-    removeProperty(name);
+    removePropertyFromSelectedTypes(name);
 }
 
 void ObjectTypesEditor::renameProperty()
@@ -551,10 +550,10 @@ void ObjectTypesEditor::renameProperty()
     dialog->setLabelText(tr("Name:"));
     dialog->setTextValue(oldName);
     dialog->setWindowTitle(tr("Rename Property"));
-    dialog->open(this, SLOT(renameProperty(QString)));
+    dialog->open(this, SLOT(renamePropertyTo(QString)));
 }
 
-void ObjectTypesEditor::renameProperty(const QString &name)
+void ObjectTypesEditor::renamePropertyTo(const QString &name)
 {
     if (name.isEmpty())
         return;

@@ -30,6 +30,7 @@ namespace Internal {
 
 class BrushItem;
 class MapDocument;
+class TileStamp;
 
 /**
  * A convenient base class for tile based tools.
@@ -45,9 +46,10 @@ public:
     AbstractTileTool(const QString &name,
                      const QIcon &icon,
                      const QKeySequence &shortcut,
+                     BrushItem *brushItem = nullptr,
                      QObject *parent = nullptr);
 
-    ~AbstractTileTool();
+    ~AbstractTileTool() override;
 
     void activate(MapScene *scene) override;
     void deactivate(MapScene *scene) override;
@@ -114,9 +116,13 @@ protected:
      */
     TileLayer *currentTileLayer() const;
 
+    virtual void updateBrushVisibility();
+    virtual QList<Layer *> targetLayers() const;
+
+    QList<Layer *> targetLayersForStamp(const TileStamp &stamp) const;
+
 private:
     void setBrushVisible(bool visible);
-    void updateBrushVisibility();
 
     TilePositionMethod mTilePositionMethod;
     BrushItem *mBrushItem;

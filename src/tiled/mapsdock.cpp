@@ -90,12 +90,13 @@ MapsDock::MapsDock(QWidget *parent)
     setWidget(widget);
     retranslateUi();
 
-    connect(button, SIGNAL(clicked()), this, SLOT(browse()));
+    connect(button, &QAbstractButton::clicked, this, &MapsDock::browse);
 
     Preferences *prefs = Preferences::instance();
-    connect(prefs, SIGNAL(mapsDirectoryChanged()), this, SLOT(onMapsDirectoryChanged()));
+    connect(prefs, &Preferences::mapsDirectoryChanged, this, &MapsDock::onMapsDirectoryChanged);
+
     mDirectoryEdit->setText(prefs->mapsDirectory());
-    connect(mDirectoryEdit, SIGNAL(returnPressed()), this, SLOT(editedMapsDirectory()));
+    connect(mDirectoryEdit, &QLineEdit::returnPressed, this, &MapsDock::editedMapsDirectory);
 }
 
 void MapsDock::browse()
@@ -112,7 +113,14 @@ void MapsDock::browse()
 void MapsDock::editedMapsDirectory()
 {
     Preferences *prefs = Preferences::instance();
-    prefs->setMapsDirectory(mDirectoryEdit->text());
+
+    const QFileInfo fileInfo(mDirectoryEdit->text());
+    if (fileInfo.isDir()) {
+        prefs->setMapsDirectory(fileInfo.filePath());
+    } else if (fileInfo.isFile()) {
+        mDirectoryEdit->setText(fileInfo.path());
+        prefs->setMapsDirectory(fileInfo.path());
+    }
 }
 
 void MapsDock::onMapsDirectoryChanged()
@@ -151,49 +159,39 @@ MapsView::MapsView(QWidget *parent)
     setDefaultDropAction(Qt::MoveAction);
 
     Preferences *prefs = Preferences::instance();
-    connect(prefs, SIGNAL(mapsDirectoryChanged()),
-            SLOT(onMapsDirectoryChanged()));
+    connect(prefs, &Preferences::mapsDirectoryChanged,
+            this, &MapsView::onMapsDirectoryChanged);
 
     QDir mapsDir(prefs->mapsDirectory());
     if (!mapsDir.exists())
         mapsDir.setPath(QDir::currentPath());
 
-    mFSModel = new FileSystemModel(this);
-    mFSModel->setRootPath(mapsDir.absolutePath());
+    mFileSystemModel = new FileSystemModel(this);
+    mFileSystemModel->setRootPath(mapsDir.absolutePath());
+    mFileSystemModel->setFilter(QDir::AllDirs | QDir::Files | QDir::NoDot);
+    mFileSystemModel->setNameFilterDisables(false); // hide filtered files
 
-    QStringList nameFilters(QLatin1String("*.tmx"));
+    updateNameFilters();
 
-    // The file system model name filters are plain, whereas the plugins expose
-    // a filter as part of the file description
-    QRegExp filterFinder(QLatin1String("\\((\\*\\.[^\\)\\s]*)"));
-
-    for (MapFormat *format : PluginManager::objects<MapFormat>()) {
-        if (!(format->capabilities() & MapFormat::Read))
-            continue;
-
-        const QString filter = format->nameFilter();
-        if (filterFinder.indexIn(filter) != -1)
-            nameFilters.append(filterFinder.cap(1));
-    }
-
-    mFSModel->setFilter(QDir::AllDirs | QDir::Files | QDir::NoDot);
-    mFSModel->setNameFilters(nameFilters);
-    mFSModel->setNameFilterDisables(false); // hide filtered files
-
-    setModel(mFSModel);
+    setModel(mFileSystemModel);
 
     QHeaderView *headerView = header();
     headerView->hideSection(1); // Size column
-    headerView->hideSection(2);
-    headerView->hideSection(3);
+    headerView->hideSection(2); // Type column
+    headerView->hideSection(3); // Modified column
 
-    setRootIndex(mFSModel->index(mapsDir.absolutePath()));
-    
+    setRootIndex(mFileSystemModel->index(mapsDir.absolutePath()));
+
     header()->setStretchLastSection(false);
     header()->setSectionResizeMode(0, QHeaderView::Stretch);
 
-    connect(this, SIGNAL(activated(QModelIndex)),
-            SLOT(onActivated(QModelIndex)));
+    connect(this, &QAbstractItemView::activated,
+            this, &MapsView::onActivated);
+
+    connect(PluginManager::instance(), &PluginManager::objectAdded,
+            this, &MapsView::pluginObjectAddedOrRemoved);
+    connect(PluginManager::instance(), &PluginManager::objectRemoved,
+            this, &MapsView::pluginObjectAddedOrRemoved);
 }
 
 QSize MapsView::sizeHint() const
@@ -218,7 +216,7 @@ void MapsView::onMapsDirectoryChanged()
     QDir mapsDir(prefs->mapsDirectory());
     if (!mapsDir.exists())
         mapsDir.setPath(QDir::currentPath());
-    model()->setRootPath(mapsDir.canonicalPath());
+    model()->setRootPath(mapsDir.absolutePath());
     setRootIndex(model()->index(mapsDir.absolutePath()));
 }
 
@@ -228,9 +226,31 @@ void MapsView::onActivated(const QModelIndex &index)
     QFileInfo fileInfo(path);
     if (fileInfo.isDir()) {
         Preferences *prefs = Preferences::instance();
-        prefs->setMapsDirectory(fileInfo.canonicalFilePath());
+        prefs->setMapsDirectory(fileInfo.absoluteFilePath());
         return;
     }
 
     DocumentManager::instance()->openFile(path);
+}
+
+void MapsView::pluginObjectAddedOrRemoved(QObject *object)
+{
+    if (auto format = qobject_cast<MapFormat*>(object))
+        if (format->capabilities() & FileFormat::Read)
+            updateNameFilters();
+}
+
+void MapsView::updateNameFilters()
+{
+    QStringList nameFilters;
+
+    for (MapFormat *format : PluginManager::objects<MapFormat>()) {
+        if (!(format->capabilities() & MapFormat::Read))
+            continue;
+
+        const QString filter = format->nameFilter();
+        nameFilters.append(Utils::cleanFilterList(filter));
+    }
+
+    mFileSystemModel->setNameFilters(nameFilters);
 }

@@ -44,25 +44,30 @@ namespace Internal {
 
 class AbstractTool;
 class BucketFillTool;
+class ComboBoxProxyModel;
+class EditPolygonTool;
 class LayerDock;
 class MapDocument;
-class MapDocumentActionHandler;
-class MapsDock;
 class MapView;
+class MapsDock;
 class MiniMapDock;
 class ObjectsDock;
 class PropertiesDock;
 class ReversingProxyModel;
+class ShapeFillTool;
 class StampBrush;
+class TemplatesDock;
 class TerrainBrush;
 class TerrainDock;
-class TilesetDock;
 class TileStamp;
 class TileStampManager;
+class TileStampsDock;
+class TilesetDock;
 class ToolManager;
 class TreeViewComboBox;
-class UncheckableItemsModel;
 class UndoDock;
+class WangBrush;
+class WangDock;
 class Zoomable;
 
 class MapEditor : public Editor
@@ -71,7 +76,7 @@ class MapEditor : public Editor
 
 public:
     explicit MapEditor(QObject *parent = nullptr);
-    ~MapEditor();
+    ~MapEditor() override;
 
     void saveState() override;
     void restoreState() override;
@@ -90,6 +95,8 @@ public:
     StandardActions enabledStandardActions() const override;
     void performStandardAction(StandardAction action) override;
 
+    void resetLayout() override;
+
     MapView *viewForDocument(MapDocument *mapDocument) const;
     MapView *currentMapView() const;
     Zoomable *zoomable() const override;
@@ -101,16 +108,13 @@ public slots:
 
     void paste(ClipboardManager::PasteFlags flags);
 
-    void flipHorizontally() { flip(FlipHorizontally); }
-    void flipVertically() { flip(FlipVertically); }
-    void rotateLeft() { rotate(RotateLeft); }
-    void rotateRight() { rotate(RotateRight); }
-
-    void flip(FlipDirection direction);
-    void rotate(RotateDirection direction);
+    void setRandom(bool value);
+    void setWangFill(bool value);
 
     void setStamp(const TileStamp &stamp);
     void selectTerrainBrush();
+
+    void selectWangBrush();
 
     void addExternalTilesets(const QStringList &fileNames);
     void filesDroppedOnTilesetDock(const QStringList &fileNames);
@@ -141,19 +145,19 @@ private:
     QHash<MapDocument*, MapView*> mWidgetForMap;
     MapDocument *mCurrentMapDocument;
 
-    QToolButton *mRandomButton;
-
     PropertiesDock *mPropertiesDock;
     MapsDock *mMapsDock;
     UndoDock *mUndoDock;
     ObjectsDock *mObjectsDock;
+    TemplatesDock *mTemplatesDock;
     TilesetDock *mTilesetDock;
     TerrainDock *mTerrainDock;
+    WangDock *mWangDock;
     MiniMapDock* mMiniMapDock;
-    QDockWidget *mTileStampsDock;
+    TileStampsDock *mTileStampsDock;
 
     TreeViewComboBox *mLayerComboBox;
-    UncheckableItemsModel *mUncheckableProxyModel;
+    ComboBoxProxyModel *mComboBoxProxyModel;
     ReversingProxyModel *mReversingProxyModel;
 
     Zoomable *mZoomable;
@@ -162,10 +166,14 @@ private:
 
     StampBrush *mStampBrush;
     BucketFillTool *mBucketFillTool;
+    ShapeFillTool *mShapeFillTool;
     TerrainBrush *mTerrainBrush;
+    WangBrush *mWangBrush;
+    EditPolygonTool *mEditPolygonTool;
 
     QToolBar *mMainToolBar;
     QToolBar *mToolsToolBar;
+    QToolBar *mToolSpecificToolBar;
     ToolManager *mToolManager;
     AbstractTool *mSelectedTool;
     MapView *mViewWithTool;

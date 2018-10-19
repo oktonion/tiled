@@ -27,6 +27,7 @@
 #include "mapobject.h"
 #include "savefile.h"
 #include "tile.h"
+#include "tiled.h"
 #include "tilelayer.h"
 #include "tileset.h"
 #include "objectgroup.h"
@@ -36,6 +37,8 @@
 #include <QSettings>
 #include <QStringList>
 #include <QTextStream>
+
+#include <memory>
 
 using namespace Tiled;
 
@@ -55,7 +58,7 @@ Tiled::Map *FlarePlugin::read(const QString &fileName)
     }
 
     // default to values of the original flare alpha game.
-    QScopedPointer<Map> map(new Map(Map::Isometric, 256, 256, 64, 32));
+    std::unique_ptr<Map> map(new Map(Map::Isometric, 256, 256, 64, 32));
 
     QTextStream stream (&file);
     QString line;
@@ -71,6 +74,7 @@ Tiled::Map *FlarePlugin::read(const QString &fileName)
     bool tilesetsSectionFound = false;
     bool headerSectionFound = false;
     bool tilelayerSectionFound = false; // tile layer or objects
+    QColor backgroundColor;
 
     while (!stream.atEnd()) {
         line = stream.readLine();
@@ -102,6 +106,20 @@ Tiled::Map *FlarePlugin::read(const QString &fileName)
                     map->setTileHeight(value.toInt());
                 else if (key == QLatin1String("orientation"))
                     map->setOrientation(orientationFromString(value));
+                else if (key == QLatin1String("background_color")){
+                    QStringList rgbaList = value.split(',');
+
+                    if (!rgbaList.isEmpty())
+                        backgroundColor.setRed(rgbaList.takeFirst().toInt());
+                    if (!rgbaList.isEmpty())
+                        backgroundColor.setGreen(rgbaList.takeFirst().toInt());
+                    if (!rgbaList.isEmpty())
+                        backgroundColor.setBlue(rgbaList.takeFirst().toInt());
+                    if (!rgbaList.isEmpty())
+                        backgroundColor.setAlpha(rgbaList.takeFirst().toInt());
+
+                    map->setBackgroundColor(backgroundColor);
+                }
                 else
                     map->setProperty(key, value);
             }
@@ -136,7 +154,7 @@ Tiled::Map *FlarePlugin::read(const QString &fileName)
                     if (list.size() > 4)
                         tileset->setTileOffset(QPoint(list[3].toInt(),list[4].toInt()));
 
-                    gidMapper.insert(gid, tileset.data());
+                    gidMapper.insert(gid, tileset);
                     if (list.size() > 5) {
                         gid += list[5].toInt();
                     } else {
@@ -213,24 +231,24 @@ Tiled::Map *FlarePlugin::read(const QString &fileName)
                     mapobject->setType(value);
                 } else if (key == QLatin1String("location")) {
                     QStringList loc = value.split(QChar(','));
-                    float x,y;
-                    int w,h;
+                    qreal x,y;
+                    qreal w,h;
                     if (map->orientation() == Map::Orthogonal) {
-                        x = loc[0].toFloat()*map->tileWidth();
-                        y = loc[1].toFloat()*map->tileHeight();
+                        x = loc[0].toDouble() * map->tileWidth();
+                        y = loc[1].toDouble() * map->tileHeight();
                         if (loc.size() > 3) {
-                            w = loc[2].toInt()*map->tileWidth();
-                            h = loc[3].toInt()*map->tileHeight();
+                            w = loc[2].toInt() * map->tileWidth();
+                            h = loc[3].toInt() * map->tileHeight();
                         } else {
                             w = map->tileWidth();
                             h = map->tileHeight();
                         }
                     } else {
-                        x = loc[0].toFloat()*map->tileHeight();
-                        y = loc[1].toFloat()*map->tileHeight();
+                        x = loc[0].toDouble() * map->tileHeight();
+                        y = loc[1].toDouble() * map->tileHeight();
                         if (loc.size() > 3) {
-                            w = loc[2].toInt()*map->tileHeight();
-                            h = loc[3].toInt()*map->tileHeight();
+                            w = loc[2].toInt() * map->tileHeight();
+                            h = loc[3].toInt() * map->tileHeight();
                         } else {
                             w = h = map->tileHeight();
                         }
@@ -251,7 +269,7 @@ Tiled::Map *FlarePlugin::read(const QString &fileName)
         return nullptr;
     }
 
-    return map.take();
+    return map.release();
 }
 
 bool FlarePlugin::supportsFile(const QString &fileName) const
@@ -284,6 +302,7 @@ bool FlarePlugin::write(const Tiled::Map *map, const QString &fileName)
     }
 
     QTextStream out(file.device());
+    QColor backgroundColor = map->backgroundColor();
     out.setCodec("UTF-8");
 
     const int mapWidth = map->width();
@@ -296,21 +315,21 @@ bool FlarePlugin::write(const Tiled::Map *map, const QString &fileName)
     out << "tilewidth=" << map->tileWidth() << "\n";
     out << "tileheight=" << map->tileHeight() << "\n";
     out << "orientation=" << orientationToString(map->orientation()) << "\n";
+    out << "background_color=" << backgroundColor.red() << "," << backgroundColor.green() << "," << backgroundColor.blue() << "," << backgroundColor.alpha() << "\n";
+
+    const QDir mapDir = QFileInfo(fileName).absoluteDir();
 
     // write all properties for this map
     Properties::const_iterator it = map->properties().constBegin();
     Properties::const_iterator it_end = map->properties().constEnd();
     for (; it != it_end; ++it) {
-        out << it.key() << "=" << toExportValue(it.value()).toString() << "\n";
+        out << it.key() << "=" << toExportValue(it.value(), mapDir).toString() << "\n";
     }
     out << "\n";
 
-    QDir mapDir = QFileInfo(fileName).absoluteDir();
-
     out << "[tilesets]\n";
     for (const SharedTileset &tileset : map->tilesets()) {
-        const QString &imageSource = tileset->imageSource();
-        QString source = mapDir.relativeFilePath(imageSource);
+        QString source = toFileReference(tileset->imageSource(), mapDir);
         out << "tileset=" << source
             << "," << tileset->tileWidth()
             << "," << tileset->tileHeight()
@@ -338,6 +357,12 @@ bool FlarePlugin::write(const Tiled::Map *map, const QString &fileName)
                 if (y < mapHeight - 1)
                     out << ",";
                 out << "\n";
+            }
+            //Write all properties for this layer
+            Properties::const_iterator it = tileLayer->properties().constBegin();
+            Properties::const_iterator it_end = tileLayer->properties().constEnd();
+            for (; it != it_end; ++it) {
+                out << it.key() << "=" << toExportValue(it.value(), mapDir).toString() << "\n";
             }
             out << "\n";
         }
@@ -367,10 +392,9 @@ bool FlarePlugin::write(const Tiled::Map *map, const QString &fileName)
                     out << "," << w << "," << h << "\n";
 
                     // write all properties for this object
-                    Properties::const_iterator it = o->properties().constBegin();
-                    Properties::const_iterator it_end = o->properties().constEnd();
-                    for (; it != it_end; ++it) {
-                        out << it.key() << "=" << it.value().toString() << "\n";
+                    QVariantMap propsMap = o->properties();
+                    for (QVariantMap::const_iterator it = propsMap.constBegin(); it != propsMap.constEnd(); ++it) {
+                        out << it.key() << "=" << toExportValue(it.value(), mapDir).toString() << "\n";
                     }
                     out << "\n";
                 }

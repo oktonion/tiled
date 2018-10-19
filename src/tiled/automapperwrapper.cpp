@@ -25,6 +25,8 @@
 #include "tile.h"
 #include "tilelayer.h"
 
+#include "qtcompat_p.h"
+
 using namespace Tiled;
 using namespace Tiled::Internal;
 
@@ -40,13 +42,13 @@ AutoMapperWrapper::AutoMapperWrapper(MapDocument *mapDocument,
     while (index < autoMapper.size()) {
         AutoMapper *a = autoMapper.at(index);
         if (a->prepareAutoMap()) {
-            touchedLayers |= a->getTouchedTileLayers();
+            touchedLayers |= a->touchedTileLayers();
             index++;
         } else {
             autoMapper.remove(index);
         }
     }
-    foreach (const QString &layerName, touchedLayers) {
+    for (const QString &layerName : qAsConst(touchedLayers)) {
         const int layerIndex = map->indexOfLayer(layerName);
         Q_ASSERT(layerIndex != -1);
         mLayersBefore.append(static_cast<TileLayer*>(map->layerAt(layerIndex)->clone()));
@@ -56,15 +58,22 @@ AutoMapperWrapper::AutoMapperWrapper(MapDocument *mapDocument,
         a->autoMap(where);
 
     int beforeIndex = 0;
-    foreach (const QString &layerName, touchedLayers) {
+    for (const QString &layerName : qAsConst(touchedLayers)) {
         const int layerIndex = map->indexOfLayer(layerName);
         // layer index exists, because AutoMapper is still alive, don't check
         Q_ASSERT(layerIndex != -1);
         TileLayer *before = mLayersBefore.at(beforeIndex);
         TileLayer *after = static_cast<TileLayer*>(map->layerAt(layerIndex));
 
+        MapDocument::TileLayerChangeFlags flags;
+
         if (before->drawMargins() != after->drawMargins())
-            emit mMapDocument->tileLayerDrawMarginsChanged(after);
+            flags |= MapDocument::LayerDrawMarginsChanged;
+        if (before->bounds() != after->bounds())
+            flags |= MapDocument::LayerBoundsChanged;
+
+        if (flags)
+            emit mMapDocument->tileLayerChanged(after, flags);
 
         // reduce memory usage by saving only diffs
         QRect diffRegion = before->computeDiffRegion(after).boundingRect();
@@ -115,7 +124,7 @@ void AutoMapperWrapper::redo()
 void AutoMapperWrapper::patchLayer(int layerIndex, TileLayer *layer)
 {
     Map *map = mMapDocument->map();
-    QRect b = layer->bounds();
+    QRect b = layer->rect();
 
     Q_ASSERT(map->layerAt(layerIndex)->asTileLayer());
     TileLayer *t = static_cast<TileLayer*>(map->layerAt(layerIndex));

@@ -21,6 +21,7 @@
 
 #include "mapobjectmodel.h"
 
+#include "changelayer.h"
 #include "changemapobject.h"
 #include "grouplayer.h"
 #include "layermodel.h"
@@ -217,8 +218,14 @@ bool MapObjectModel::setData(const QModelIndex &index, const QVariant &value,
     if (Layer *layer = toLayer(index)) {
         switch (role) {
         case Qt::CheckStateRole: {
-            LayerModel *layerModel = mMapDocument->layerModel();
-            layerModel->setData(layerModel->index(layer), value, role);
+            Qt::CheckState c = static_cast<Qt::CheckState>(value.toInt());
+            const bool visible = (c == Qt::Checked);
+            if (visible != layer->isVisible()) {
+                QUndoCommand *command = new SetLayerVisible(mMapDocument,
+                                                            layer,
+                                                            visible);
+                mMapDocument->undoStack()->push(command);
+            }
             return true;
         }
         case Qt::EditRole: {
@@ -431,7 +438,9 @@ void MapObjectModel::tileTypeChanged(Tile *tile)
     }
 }
 
-void MapObjectModel::emitObjectsChanged(const QList<MapObject *> &objects, const QList<Column> &columns)
+void MapObjectModel::emitObjectsChanged(const QList<MapObject *> &objects,
+                                        const QList<Column> &columns,
+                                        const QVector<int> &roles)
 {
     emit objectsChanged(objects);
     if (columns.isEmpty())
@@ -439,7 +448,9 @@ void MapObjectModel::emitObjectsChanged(const QList<MapObject *> &objects, const
 
     auto minMaxPair = std::minmax_element(columns.begin(), columns.end());
     for (auto object : objects) {
-        emit dataChanged(index(object, *minMaxPair.first), index(object, *minMaxPair.second));
+        emit dataChanged(index(object, *minMaxPair.first),
+                         index(object, *minMaxPair.second),
+                         roles);
     }
 }
 

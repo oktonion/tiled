@@ -73,14 +73,18 @@ public:
 
     void mousePressEvent(QMouseEvent *event) override;
 
-    QFileSystemModel *model() const { return mFSModel; }
+    QFileSystemModel *model() const { return mFileSystemModel; }
 
 private slots:
     void onMapsDirectoryChanged();
     void onActivated(const QModelIndex &index);
 
+    void pluginObjectAddedOrRemoved(QObject *object);
+
 private:
-    QFileSystemModel *mFSModel;
+    void updateNameFilters();
+
+    QFileSystemModel *mFileSystemModel;
 };
 
 } // namespace Internal

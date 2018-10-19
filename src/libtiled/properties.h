@@ -33,12 +33,15 @@
 #include <QJsonArray>
 #include <QMap>
 #include <QString>
+#include <QUrl>
 #include <QVariant>
+
+class QDir;
 
 namespace Tiled {
 
 struct FilePath {
-    QString absolutePath;
+    QUrl url;
 };
 
 /**
@@ -98,10 +101,6 @@ class TILEDSHARED_EXPORT AggregatedProperties : public QMap<QString, AggregatedP
 {
 public:
     void aggregate(const Properties &properties);
-    int aggregatedCount() { return mAggregatedCount; }
-
-private:
-    int mAggregatedCount;
 };
 
 
@@ -112,6 +111,9 @@ TILEDSHARED_EXPORT int nameToType(const QString &name);
 
 TILEDSHARED_EXPORT QVariant toExportValue(const QVariant &value);
 TILEDSHARED_EXPORT QVariant fromExportValue(const QVariant &value, int type);
+
+TILEDSHARED_EXPORT QVariant toExportValue(const QVariant &value, const QDir &dir);
+TILEDSHARED_EXPORT QVariant fromExportValue(const QVariant &value, int type, const QDir &dir);
 
 } // namespace Tiled
 

@@ -20,6 +20,7 @@
 
 #include "changetileimagesource.h"
 
+#include "imagecache.h"
 #include "tilesetdocument.h"
 #include "tile.h"
 
@@ -30,7 +31,7 @@ namespace Internal {
 
 ChangeTileImageSource::ChangeTileImageSource(TilesetDocument *tilesetDocument,
                                              Tile *tile,
-                                             const QString &imageSource)
+                                             const QUrl &imageSource)
     : mTilesetDocument(tilesetDocument)
     , mTile(tile)
     , mOldImageSource(tile->imageSource())
@@ -40,10 +41,11 @@ ChangeTileImageSource::ChangeTileImageSource(TilesetDocument *tilesetDocument,
                                         "Change Tile Image"));
 }
 
-void ChangeTileImageSource::apply(const QString &imageSource)
+void ChangeTileImageSource::apply(const QUrl &imageSource)
 {
+    // todo: make sure remote source loading is triggered
     mTilesetDocument->setTileImage(mTile,
-                                   QPixmap(imageSource),
+                                   ImageCache::loadPixmap(imageSource.toLocalFile()),
                                    imageSource);
 }
 

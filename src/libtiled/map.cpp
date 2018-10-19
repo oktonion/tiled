@@ -32,16 +32,17 @@
 
 #include "layer.h"
 #include "objectgroup.h"
+#include "objecttemplate.h"
 #include "tile.h"
 #include "tilelayer.h"
 #include "mapobject.h"
 
-#include <cmath>
+#include <QtMath>
 
 using namespace Tiled;
 
 Map::Map(Orientation orientation,
-         int width, int height, int tileWidth, int tileHeight):
+         int width, int height, int tileWidth, int tileHeight, bool infinite):
     Object(MapType),
     mOrientation(orientation),
     mRenderOrder(RightDown),
@@ -49,12 +50,23 @@ Map::Map(Orientation orientation,
     mHeight(height),
     mTileWidth(tileWidth),
     mTileHeight(tileHeight),
+    mInfinite(infinite),
     mHexSideLength(0),
     mStaggerAxis(StaggerY),
     mStaggerIndex(StaggerOdd),
     mDrawMarginsDirty(true),
     mLayerDataFormat(Base64Zlib),
+    mNextLayerId(1),
     mNextObjectId(1)
+{
+}
+
+Map::Map(Orientation orientation,
+         QSize size, QSize tileSize, bool infinite)
+    : Map(orientation,
+          size.width(), size.height(),
+          tileSize.width(), tileSize.height(),
+          infinite)
 {
 }
 
@@ -66,6 +78,7 @@ Map::Map(const Map &map):
     mHeight(map.mHeight),
     mTileWidth(map.mTileWidth),
     mTileHeight(map.mTileHeight),
+    mInfinite(map.mInfinite),
     mHexSideLength(map.mHexSideLength),
     mStaggerAxis(map.mStaggerAxis),
     mStaggerIndex(map.mStaggerIndex),
@@ -74,10 +87,12 @@ Map::Map(const Map &map):
     mDrawMarginsDirty(map.mDrawMarginsDirty),
     mTilesets(map.mTilesets),
     mLayerDataFormat(map.mLayerDataFormat),
-    mNextObjectId(1)
+    mNextLayerId(map.mNextLayerId),
+    mNextObjectId(map.mNextObjectId)
 {
     for (const Layer *layer : map.mLayers) {
         Layer *clone = layer->clone();
+        clone->setId(layer->id());
         clone->setMap(this);
         mLayers.append(clone);
     }
@@ -115,10 +130,10 @@ QMargins Map::computeLayerOffsetMargins() const
 
     for (const Layer *layer : mLayers) {
         const QPointF offset = layer->offset();
-        offsetMargins = maxMargins(QMargins(std::ceil(-offset.x()),
-                                            std::ceil(-offset.y()),
-                                            std::ceil(offset.x()),
-                                            std::ceil(offset.y())),
+        offsetMargins = maxMargins(QMargins(qCeil(-offset.x()),
+                                            qCeil(-offset.y()),
+                                            qCeil(offset.x()),
+                                            qCeil(offset.y())),
                                    offsetMargins);
     }
 
@@ -161,31 +176,10 @@ void Map::recomputeDrawMargins() const
 int Map::layerCount(Layer::TypeFlag type) const
 {
     int count = 0;
-    LayerIterator iterator(this);
-    while (Layer *layer = iterator.next())
-       if (layer->layerType() == type)
-           count++;
+    LayerIterator iterator(this, type);
+    while (iterator.next())
+       count++;
     return count;
-}
-
-QList<ObjectGroup*> Map::objectGroups() const
-{
-    QList<ObjectGroup*> layers;
-    LayerIterator iterator(this);
-    while (Layer *layer = iterator.next())
-        if (ObjectGroup *og = layer->asObjectGroup())
-            layers.append(og);
-    return layers;
-}
-
-QList<TileLayer*> Map::tileLayers() const
-{
-    QList<TileLayer*> layers;
-    LayerIterator iterator(this);
-    while (Layer *layer = iterator.next())
-        if (TileLayer *tl = layer->asTileLayer())
-            layers.append(tl);
-    return layers;
 }
 
 void Map::addLayer(Layer *layer)
@@ -194,7 +188,7 @@ void Map::addLayer(Layer *layer)
     mLayers.append(layer);
 }
 
-int Map::indexOfLayer(const QString &layerName, unsigned layertypes) const
+int Map::indexOfLayer(const QString &layerName, int layertypes) const
 {
     for (int index = 0; index < mLayers.size(); index++)
         if (layerAt(index)->name() == layerName
@@ -202,6 +196,15 @@ int Map::indexOfLayer(const QString &layerName, unsigned layertypes) const
             return index;
 
     return -1;
+}
+
+Layer *Map::findLayer(const QString &name, int layerTypes) const
+{
+    LayerIterator it(this, layerTypes);
+    while (Layer *layer = it.next())
+        if (layer->name() == name)
+            return layer;
+    return nullptr;
 }
 
 void Map::insertLayer(int index, Layer *layer)
@@ -212,6 +215,9 @@ void Map::insertLayer(int index, Layer *layer)
 
 void Map::adoptLayer(Layer *layer)
 {
+    if (layer->id() == 0)
+        layer->setId(takeNextLayerId());
+
     layer->setMap(this);
 
     if (ObjectGroup *group = layer->asObjectGroup())
@@ -231,6 +237,7 @@ bool Map::addTileset(const SharedTileset &tileset)
         return false;
 
     mTilesets.append(tileset);
+    invalidateDrawMargins();
     return true;
 }
 
@@ -244,6 +251,7 @@ void Map::insertTileset(int index, const SharedTileset &tileset)
 {
     Q_ASSERT(!mTilesets.contains(tileset));
     mTilesets.insert(index, tileset);
+    invalidateDrawMargins();
 }
 
 int Map::indexOfTileset(const SharedTileset &tileset) const
@@ -254,6 +262,7 @@ int Map::indexOfTileset(const SharedTileset &tileset) const
 void Map::removeTilesetAt(int index)
 {
     mTilesets.remove(index);
+    invalidateDrawMargins();
 }
 
 bool Map::replaceTileset(const SharedTileset &oldTileset,
@@ -270,6 +279,8 @@ bool Map::replaceTileset(const SharedTileset &oldTileset,
                                           newTileset.data());
     }
 
+    invalidateDrawMargins();
+
     if (mTilesets.contains(newTileset)) {
         mTilesets.remove(index);
         return false;
@@ -277,6 +288,18 @@ bool Map::replaceTileset(const SharedTileset &oldTileset,
         mTilesets.replace(index, newTileset);
         return true;
     }
+}
+
+QSet<SharedTileset> Map::usedTilesets() const
+{
+    QSet<SharedTileset> tilesets;
+
+    // Only top-level layers need to be considered, since GroupLayer goes over
+    // its children
+    for (const Layer *layer : mLayers)
+        tilesets |= layer->usedTilesets();
+
+    return tilesets;
 }
 
 bool Map::isTilesetUsed(const Tileset *tileset) const
@@ -288,6 +311,26 @@ bool Map::isTilesetUsed(const Tileset *tileset) const
     return false;
 }
 
+QList<MapObject*> Map::replaceObjectTemplate(const ObjectTemplate *oldObjectTemplate,
+                                             const ObjectTemplate *newObjectTemplate)
+{
+    Q_ASSERT(oldObjectTemplate != newObjectTemplate);
+
+    QList<MapObject*> changedObjects;
+
+    for (auto layer : objectGroups()) {
+        for (auto o : static_cast<ObjectGroup*>(layer)->objects()) {
+            if (o->objectTemplate() == oldObjectTemplate) {
+                o->setObjectTemplate(newObjectTemplate);
+                o->syncWithTemplate();
+                changedObjects.append(o);
+            }
+        }
+    }
+
+    return changedObjects;
+}
+
 void Map::initializeObjectIds(ObjectGroup &objectGroup)
 {
     for (MapObject *o : objectGroup) {
@@ -296,18 +339,24 @@ void Map::initializeObjectIds(ObjectGroup &objectGroup)
     }
 }
 
+QRegion Map::tileRegion() const
+{
+    QRegion region;
+    LayerIterator it(this, Layer::TileLayerType);
+    while (auto tileLayer = static_cast<TileLayer*>(it.next()))
+        region |= tileLayer->region();
+    return region;
+}
 
 QString Tiled::staggerAxisToString(Map::StaggerAxis staggerAxis)
 {
     switch (staggerAxis) {
-    default:
     case Map::StaggerY:
         return QLatin1String("y");
-        break;
     case Map::StaggerX:
         return QLatin1String("x");
-        break;
     }
+    return QString();
 }
 
 Map::StaggerAxis Tiled::staggerAxisFromString(const QString &string)
@@ -321,14 +370,12 @@ Map::StaggerAxis Tiled::staggerAxisFromString(const QString &string)
 QString Tiled::staggerIndexToString(Map::StaggerIndex staggerIndex)
 {
     switch (staggerIndex) {
-    default:
     case Map::StaggerOdd:
         return QLatin1String("odd");
-        break;
     case Map::StaggerEven:
         return QLatin1String("even");
-        break;
     }
+    return QString();
 }
 
 Map::StaggerIndex Tiled::staggerIndexFromString(const QString &string)
@@ -342,23 +389,18 @@ Map::StaggerIndex Tiled::staggerIndexFromString(const QString &string)
 QString Tiled::orientationToString(Map::Orientation orientation)
 {
     switch (orientation) {
-    default:
     case Map::Unknown:
         return QLatin1String("unknown");
-        break;
     case Map::Orthogonal:
         return QLatin1String("orthogonal");
-        break;
     case Map::Isometric:
         return QLatin1String("isometric");
-        break;
     case Map::Staggered:
         return QLatin1String("staggered");
-        break;
     case Map::Hexagonal:
         return QLatin1String("hexagonal");
-        break;
     }
+    return QString();
 }
 
 Map::Orientation Tiled::orientationFromString(const QString &string)
@@ -379,20 +421,16 @@ Map::Orientation Tiled::orientationFromString(const QString &string)
 QString Tiled::renderOrderToString(Map::RenderOrder renderOrder)
 {
     switch (renderOrder) {
-    default:
     case Map::RightDown:
         return QLatin1String("right-down");
-        break;
     case Map::RightUp:
         return QLatin1String("right-up");
-        break;
     case Map::LeftDown:
         return QLatin1String("left-down");
-        break;
     case Map::LeftUp:
         return QLatin1String("left-up");
-        break;
     }
+    return QString();
 }
 
 Map::RenderOrder Tiled::renderOrderFromString(const QString &string)

@@ -22,17 +22,25 @@
 
 #include "document.h"
 #include "tileset.h"
+#include "tilesetformat.h"
 
 #include <QList>
+#include <QMap>
+
+#include <memory>
+#include <unordered_map>
 
 namespace Tiled {
-
-class TilesetFormat;
 
 namespace Internal {
 
 class MapDocument;
+class TilesetDocument;
 class TilesetTerrainModel;
+class TilesetWangSetModel;
+class WangColorModel;
+
+using TilesetDocumentPtr = QSharedPointer<TilesetDocument>;
 
 /**
  * Represents an editable tileset.
@@ -43,7 +51,9 @@ class TilesetDocument : public Document
 
 public:
     TilesetDocument(const SharedTileset &tileset, const QString &fileName = QString());
-    ~TilesetDocument();
+    ~TilesetDocument() override;
+
+    TilesetDocumentPtr sharedFromThis() { return qSharedPointerCast<TilesetDocument>(Document::sharedFromThis()); }
 
     bool save(const QString &fileName, QString *error = nullptr) override;
 
@@ -54,12 +64,15 @@ public:
      * Loads a tileset and returns a TilesetDocument instance on success.
      * Returns null on error and sets the \a error message.
      */
-    static TilesetDocument *load(const QString &fileName,
-                                 TilesetFormat *format,
-                                 QString *error = nullptr);
+    static TilesetDocumentPtr load(const QString &fileName,
+                                   TilesetFormat *format,
+                                   QString *error = nullptr);
 
     FileFormat *writerFormat() const override;
     void setWriterFormat(TilesetFormat *format);
+
+    TilesetFormat *exportFormat() const override;
+    void setExportFormat(FileFormat *format) override;
 
     QString displayName() const override;
 
@@ -85,9 +98,14 @@ public:
     QList<Object*> currentObjects() const override;
 
     TilesetTerrainModel *terrainModel() const { return mTerrainModel; }
+    TilesetWangSetModel *wangSetModel() const { return mWangSetModel; }
+
+    WangColorModel *wangColorModel(WangSet *wangSet);
 
     void setTileType(Tile *tile, const QString &type);
-    void setTileImage(Tile *tile, const QPixmap &image, const QString &source);
+    void setTileImage(Tile *tile, const QPixmap &image, const QUrl &source);
+
+    static TilesetDocument* findDocumentForTileset(const SharedTileset &tileset);
 
 signals:
     /**
@@ -110,6 +128,8 @@ signals:
      * All the \a tiles need to be from the same tileset.
      */
     void tileTerrainChanged(const QList<Tile*> &tiles);
+
+    void tileWangSetChanged(const QList<Tile*> &tiles);
 
     /**
      * Emitted when the terrain probability of a tile changed.
@@ -137,18 +157,22 @@ private slots:
     void onPropertyChanged(Object *object, const QString &name);
     void onPropertiesChanged(Object *object);
 
-    void onTerrainAboutToBeAdded(Tileset *tileset, int terrainId);
-    void onTerrainAdded(Tileset *tileset, int terrainId);
-    void onTerrainAboutToBeRemoved(Terrain *terrain);
     void onTerrainRemoved(Terrain *terrain);
+    void onWangSetRemoved(WangSet *wangSet);
 
 private:
     SharedTileset mTileset;
     QList<MapDocument*> mMapDocuments;
 
     TilesetTerrainModel *mTerrainModel;
+    TilesetWangSetModel *mWangSetModel;
+    WangColorModel *mWangColorModel;
+    std::unordered_map<WangSet*, std::unique_ptr<WangColorModel>> mWangColorModels;
 
     QList<Tile*> mSelectedTiles;
+    QPointer<TilesetFormat> mExportFormat;
+
+    static QMap<SharedTileset, TilesetDocument*> sTilesetToDocument;
 };
 
 

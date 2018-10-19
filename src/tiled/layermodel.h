@@ -75,7 +75,7 @@ public:
                       int row, int column,
                       const QModelIndex &parent) override;
 
-    QModelIndex index(Layer *layer) const;
+    QModelIndex index(Layer *layer, int column = 0) const;
     Layer *toLayer(const QModelIndex &index) const;
 
     MapDocument *mapDocument() const;
@@ -84,14 +84,17 @@ public:
     void insertLayer(GroupLayer *parentLayer, int index, Layer *layer);
     Layer *takeLayerAt(GroupLayer *parentLayer, int index);
     void replaceLayer(Layer *layer, Layer *replacement);
+    void moveLayer(GroupLayer *parentLayer, int index, GroupLayer *toParentLayer, int toIndex);
 
     void setLayerVisible(Layer *layer, bool visible);
-    void setLayerOpacity(Layer *layer, float opacity);
+    void setLayerLocked(Layer *layer, bool locked);
+    void setLayerOpacity(Layer *layer, qreal opacity);
     void setLayerOffset(Layer *layer, const QPointF &offset);
 
     void renameLayer(Layer *layer, const QString &name);
 
-    void toggleOtherLayers(Layer *layer);
+    void toggleOtherLayers(const QList<Layer *> &layers);
+    void toggleLockOtherLayers(const QList<Layer *> &layers);
 
 signals:
     void layerAdded(Layer *layer);

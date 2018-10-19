@@ -172,8 +172,8 @@ void PluginManager::removeObject(QObject *object)
     Q_ASSERT(object);
     Q_ASSERT(mInstance->mObjects.contains(object));
 
-    emit mInstance->objectAboutToBeRemoved(object);
     mInstance->mObjects.removeOne(object);
+    emit mInstance->objectRemoved(object);
 }
 
 void PluginManager::loadPlugins()
@@ -194,7 +194,7 @@ void PluginManager::loadPlugins()
     QString pluginPath = QCoreApplication::applicationDirPath();
 #endif
 
-#if defined(Q_OS_WIN32) || defined(TILED_LINUX_ARCHIVE)
+#if defined(Q_OS_WIN32)
     pluginPath += QLatin1String("/plugins/tiled");
 #elif defined(Q_OS_MAC)
     pluginPath += QLatin1String("/../PlugIns");

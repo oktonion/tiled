@@ -2,8 +2,10 @@ import qbs
 import qbs.FileInfo
 import qbs.File
 import qbs.TextFile
+import qbs.Environment
 
 WindowsInstallerPackage {
+    builtByDefault: false
     condition: {
         if (project.windowsInstaller) {
             if (!(qbs.toolchain.contains("mingw") || qbs.toolchain.contains("msvc"))) {
@@ -16,7 +18,7 @@ WindowsInstallerPackage {
     }
 
     Depends { productTypes: ["application", "dynamiclibrary"] }
-    type: base.concat(["installable","appcast"])
+    type: base.concat(["appcast"])
 
     Depends { name: "cpp" }
     Depends { name: "Qt.core" }
@@ -40,18 +42,24 @@ WindowsInstallerPackage {
 
         if (qbs.toolchain.contains("mingw"))
             defs.push("MingwDir=" + FileInfo.joinPaths(cpp.toolchainInstallPath, ".."));
-        else if (qbs.toolchain.contains("msvc"))
-            defs.push("VcInstallDir=" + FileInfo.joinPaths(cpp.toolchainInstallPath, "../.."));
+        else if (qbs.toolchain.contains("msvc")) {
+            if (cpp.compilerVersionMajor >= 19) {
+                defs.push("VcUniversalCRT=true");
+                defs.push("VcInstallDir=" + cpp.toolchainInstallPath);
+            } else {
+                defs.push("VcInstallDir=" + FileInfo.joinPaths(cpp.toolchainInstallPath, "../.."));
+            }
+        }
 
         if (project.sparkleEnabled)
             defs.push("Sparkle");
 
-        // A bit of a hack to exclude the Python plugin when it isn't built
-        if (File.exists("C:/Python27") &&
-                qbs.toolchain.contains("mingw") &&
-                !qbs.debugInformation) {
+        if (File.exists(Environment.getEnv("PYTHONHOME")))
             defs.push("Python");
-        }
+
+        var openSslDir = "C:\\OpenSSL-Win" + bits;
+        if (File.exists(openSslDir))
+            defs.push("OpenSslDir=" + openSslDir);
 
         return defs;
     }
@@ -102,6 +110,35 @@ WindowsInstallerPackage {
             }
 
             return cmd;
+        }
+    }
+
+    // This is a clever hack to make the rule that compiles the installer
+    // depend on all installables, since that rule implicitly depends on
+    // any "wxi" tagged products.
+    Rule {
+        multiplex: true
+        inputsFromDependencies: ["installable"]
+
+        Artifact {
+            filePath: "dummy.wxi"
+            fileTags: ["wxi"]
+        }
+
+        prepare: {
+            var cmd = new JavaScriptCommand();
+            cmd.silent = true;
+            cmd.sourceCode = function() {
+                var tf;
+                try {
+                    tf = new TextFile(output.filePath, TextFile.WriteOnly);
+                    tf.writeLine("<Include/>");
+                } finally {
+                    if (tf)
+                        tf.close();
+                }
+            };
+            return [cmd];
         }
     }
 }

@@ -1,13 +1,12 @@
 import qbs 1.0
 
 TiledPlugin {
-    cpp.defines: ["DEFOLD_LIBRARY"]
+    cpp.defines: base.concat(["DEFOLD_LIBRARY"])
 
     files: [
         "defoldplugin_global.h",
         "defoldplugin.cpp",
         "defoldplugin.h",
         "plugin.json",
-        "tokendefines.h",
     ]
 }

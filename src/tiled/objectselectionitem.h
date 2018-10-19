@@ -23,6 +23,8 @@
 #include <QGraphicsObject>
 #include <QHash>
 
+#include <memory>
+
 namespace Tiled {
 
 class GroupLayer;
@@ -33,23 +35,32 @@ class Tile;
 namespace Internal {
 
 class MapDocument;
+class MapObjectItem;
 class MapObjectLabel;
 class MapObjectOutline;
 
+/**
+ * A graphics item displaying object selection.
+ *
+ * Apart from selection outlines, it also displays name labels when
+ * appropriate.
+ */
 class ObjectSelectionItem : public QGraphicsObject
 {
     Q_OBJECT
 
 public:
-    ObjectSelectionItem(MapDocument *mapDocument);
+    ObjectSelectionItem(MapDocument *mapDocument,
+                        QGraphicsItem *parent = nullptr);
+    ~ObjectSelectionItem() override;
 
     // QGraphicsItem interface
     QRectF boundingRect() const override { return QRectF(); }
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override {}
 
-
 private slots:
     void selectedObjectsChanged();
+    void hoveredMapObjectChanged(MapObject *object, MapObject *previous);
     void mapChanged();
     void layerAdded(Layer *layer);
     void layerAboutToBeRemoved(GroupLayer *parentLayer, int index);
@@ -69,6 +80,7 @@ private:
     MapDocument *mMapDocument;
     QHash<MapObject*, MapObjectLabel*> mObjectLabels;
     QHash<MapObject*, MapObjectOutline*> mObjectOutlines;
+    std::unique_ptr<MapObjectItem> mHoveredMapObjectItem;
 };
 
 } // namespace Internal

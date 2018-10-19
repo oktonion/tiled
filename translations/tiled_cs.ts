@@ -19,14 +19,14 @@
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/tiled/aboutdialog.cpp" line="+46"/>
+        <location filename="../src/tiled/aboutdialog.cpp" line="+48"/>
         <source>&lt;p align=&quot;center&quot;&gt;&lt;font size=&quot;+2&quot;&gt;&lt;b&gt;Tiled Map Editor&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;i&gt;Version %1&lt;/i&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;Copyright 2008-2017 Thorbj&amp;oslash;rn Lindeijer&lt;br&gt;(see the AUTHORS file for a full list of contributors)&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;Copyright 2008-2018 Thorbj&amp;oslash;rn Lindeijer&lt;br&gt;(see the AUTHORS file for a full list of contributors)&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;You may modify and redistribute this program under the terms of the GPL (version 2 or later). A copy of the GPL is contained in the &apos;COPYING&apos; file distributed with Tiled.&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://www.mapeditor.org/&quot;&gt;http://www.mapeditor.org/&lt;/a&gt;&lt;/p&gt;
 </source>
         <translation>&lt;p align=&quot;center&quot;&gt;&lt;font size=&quot;+2&quot;&gt;&lt;b&gt;Editor map Tiled&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;i&gt;Verze %1&lt;/i&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot;&gt;Copyright 2008-2017 Thorbj&amp;oslash;rn Lindeijer&lt;br&gt;(plný seznam přispěvatelů je v souboru AUTHORS)&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;Copyright 2008-2018 Thorbj&amp;oslash;rn Lindeijer&lt;br&gt;(plný seznam přispěvatelů je v souboru AUTHORS)&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;Tento program můžete šířit a upravovat podle licence GPLicence (verze 2 nebo pozdější). Kopii GPLlicence najdete v souboru COPYING ve zdrojovém kódu programu Tiled.&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://www.mapeditor.org/&quot;&gt;http://www.mapeditor.org/&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -47,12 +47,12 @@
 <context>
     <name>Command line</name>
     <message>
-        <location filename="../src/tiled/main.cpp" line="+239"/>
-        <source>Export syntax is --export-map [format] &lt;tmx file&gt; &lt;target file&gt;</source>
-        <translation>Syntaxe exportu je --export-map [formát] &lt;soubor tmx&gt; &lt;cílový soubor&gt;</translation>
+        <location filename="../src/tiled/main.cpp" line="+359"/>
+        <source>Export syntax is --export-map [format] &lt;source&gt; &lt;target&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="-232"/>
         <source>Format not recognized (see --export-formats)</source>
         <translation>Neznámý formát (viz --export-formats)</translation>
     </message>
@@ -67,14 +67,29 @@
         <translation>Pro cílový soubor nebyl nalezen exportér.</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+236"/>
         <source>Failed to load source map.</source>
         <translation>Nepodařilo se načíst soubor s mapou.</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+12"/>
         <source>Failed to export map to target file.</source>
         <translation>Nepodařilo se exportovat mapu do cílového souboru.</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Export syntax is --export-tileset [format] &lt;source&gt; &lt;target&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Failed to load source tileset.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Failed to export tileset to target file.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -85,17 +100,18 @@
         <translation>Vlastnosti</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+42"/>
         <source>Executable:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
+        <location line="+74"/>
         <source>Browse...</source>
         <translation type="unfinished">Procházet...</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-61"/>
         <source>Shortcut:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -110,7 +126,22 @@
         <translation>&amp;Uložit mapu před spuštěním</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+20"/>
+        <source>Arguments:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Working Directory:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Show output in Debug Console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -118,7 +149,7 @@
 <context>
     <name>CommandLineHandler</name>
     <message>
-        <location filename="../src/tiled/main.cpp" line="-189"/>
+        <location filename="../src/tiled/main.cpp" line="-267"/>
         <source>Display the version</source>
         <translation>Ukázat verzi</translation>
     </message>
@@ -134,29 +165,54 @@
     </message>
     <message>
         <location line="+5"/>
-        <source>Export the specified tmx file to target</source>
-        <translation>Exportovat danou mapu jako soubor</translation>
+        <source>Export the specified map file to target</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
+        <source>Export the specified tileset file to target</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+84"/>
+        <source>Map export formats:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Tileset export formats:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-90"/>
         <source>Print a list of supported export formats</source>
         <translation>Vypsat seznam podporovaných formátů souborů</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Export the map with tilesets embedded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Export the map or tileset with template instances detached</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Export the map or tileset with types and properties resolved</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Start a new instance, even if an instance is already running</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location line="+32"/>
-        <source>Export formats:</source>
-        <translation>Formáty souborů:</translation>
-    </message>
 </context>
 <context>
     <name>CommandLineParser</name>
     <message>
-        <location filename="../src/tiled/commandlineparser.cpp" line="+75"/>
+        <location filename="../src/tiled/commandlineparser.cpp" line="+77"/>
         <source>Bad argument %1: lonely hyphen</source>
         <translation>Špatný argument %1: samostatná pomlčka</translation>
     </message>
@@ -232,7 +288,7 @@
         <translation>Nepodařilo se otevřít soubor pro zápis.</translation>
     </message>
     <message>
-        <location line="+77"/>
+        <location line="+80"/>
         <source>CSV files (*.csv)</source>
         <translation>Soubory CSV (*.csv)</translation>
     </message>
@@ -240,12 +296,12 @@
 <context>
     <name>Defold::DefoldPlugin</name>
     <message>
-        <location filename="../src/plugins/defold/defoldplugin.cpp" line="+58"/>
+        <location filename="../src/plugins/defold/defoldplugin.cpp" line="+83"/>
         <source>Defold files (*.tilemap)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+51"/>
         <source>Could not open file for writing.</source>
         <translation type="unfinished">Nepodařilo se otevřít soubor pro zápis.</translation>
     </message>
@@ -329,12 +385,12 @@
 <context>
     <name>Flare::FlarePlugin</name>
     <message>
-        <location filename="../src/plugins/flare/flareplugin.cpp" line="+53"/>
+        <location filename="../src/plugins/flare/flareplugin.cpp" line="+56"/>
         <source>Could not open file for reading.</source>
         <translation>Nepodařilo se otevřít soubor pro čtení.</translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+94"/>
         <source>Error loading tileset %1, which expands to %2. Path not found!</source>
         <translation>Nepodařilo se načíst sadu dlaždic %1 (plná cesta: %2). Soubor nenalezen!</translation>
     </message>
@@ -367,12 +423,12 @@
 <context>
     <name>Gmx::GmxPlugin</name>
     <message>
-        <location filename="../src/plugins/gmx/gmxplugin.cpp" line="+82"/>
+        <location filename="../src/plugins/gmx/gmxplugin.cpp" line="+107"/>
         <source>Could not open file for writing.</source>
         <translation type="unfinished">Nepodařilo se otevřít soubor pro zápis.</translation>
     </message>
     <message>
-        <location line="+294"/>
+        <location line="+364"/>
         <source>GameMaker room files (*.room.gmx)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -380,7 +436,7 @@
 <context>
     <name>Json::JsonMapFormat</name>
     <message>
-        <location filename="../src/plugins/json/jsonplugin.cpp" line="+55"/>
+        <location filename="../src/plugins/json/jsonplugin.cpp" line="+56"/>
         <source>Could not open file for reading.</source>
         <translation>Nepodařilo se otevřít soubor pro čtení.</translation>
     </message>
@@ -395,7 +451,7 @@
         <translation>Nepodařilo se otevřít soubor pro zápis.</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+38"/>
         <source>Error while writing file:
 %1</source>
         <translation>Chyba při zápisu souboru:
@@ -413,14 +469,44 @@
     </message>
 </context>
 <context>
+    <name>Json::JsonObjectTemplateFormat</name>
+    <message>
+        <location line="+178"/>
+        <source>Could not open file for reading.</source>
+        <translation type="unfinished">Nepodařilo se otevřít soubor pro čtení.</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Error parsing file.</source>
+        <translation type="unfinished">Chyba při čtení souboru.</translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Could not open file for writing.</source>
+        <translation type="unfinished">Nepodařilo se otevřít soubor pro zápis.</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Error while writing file:
+%1</source>
+        <translation type="unfinished">Chyba při zápisu souboru:
+%1</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Json template files (*.json)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Json::JsonTilesetFormat</name>
     <message>
-        <location line="+66"/>
+        <location line="-193"/>
         <source>Could not open file for reading.</source>
         <translation>Nepodařilo se otevřít soubor pro čtení.</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+10"/>
         <source>Error parsing file.</source>
         <translation>Chyba při čtení souboru.</translation>
     </message>
@@ -430,7 +516,7 @@
         <translation>Nepodařilo se otevřít soubor pro zápis.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+20"/>
         <source>Error while writing file:
 %1</source>
         <translation>Chyba při zápisu souboru:
@@ -443,16 +529,29 @@
     </message>
 </context>
 <context>
-    <name>Lua::LuaPlugin</name>
+    <name>Lua::LuaMapFormat</name>
     <message>
-        <location filename="../src/plugins/lua/luaplugin.cpp" line="+60"/>
+        <location filename="../src/plugins/lua/luaplugin.cpp" line="+103"/>
         <source>Could not open file for writing.</source>
-        <translation>Nepodařilo se otevřít soubor pro zápis.</translation>
+        <translation type="unfinished">Nepodařilo se otevřít soubor pro zápis.</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+27"/>
         <source>Lua files (*.lua)</source>
-        <translation>Soubory v jazyce Lua (*.lua)</translation>
+        <translation type="unfinished">Soubory v jazyce Lua (*.lua)</translation>
+    </message>
+</context>
+<context>
+    <name>Lua::LuaTilesetFormat</name>
+    <message>
+        <location line="+18"/>
+        <source>Could not open file for writing.</source>
+        <translation type="unfinished">Nepodařilo se otevřít soubor pro zápis.</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Lua files (*.lua)</source>
+        <translation type="unfinished">Soubory v jazyce Lua (*.lua)</translation>
     </message>
 </context>
 <context>
@@ -483,7 +582,7 @@
         <translation>&amp;Mapa</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+22"/>
         <source>&amp;View</source>
         <translation>&amp;Zobrazení</translation>
     </message>
@@ -493,7 +592,7 @@
         <translation>Zobrazovat &amp;jména objektů</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+52"/>
         <source>&amp;Open...</source>
         <translation>&amp;Otevřít...</translation>
     </message>
@@ -558,7 +657,7 @@
         <translation>Uložit &amp;jako...</translation>
     </message>
     <message>
-        <location line="+189"/>
+        <location line="+192"/>
         <source>Become a Patron</source>
         <translation>Stát se Patronem</translation>
     </message>
@@ -568,7 +667,7 @@
         <translation>Uložit vše</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>&amp;Never</source>
         <translation>&amp;Nikdy</translation>
     </message>
@@ -599,7 +698,6 @@
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../src/tiled/tilecollisioneditor.cpp" line="+125"/>
         <source>Ctrl+Shift+V</source>
         <translation type="unfinished"></translation>
     </message>
@@ -614,7 +712,7 @@
         <translation type="unfinished">F11</translation>
     </message>
     <message>
-        <location line="-85"/>
+        <location line="-88"/>
         <source>Ctrl+R</source>
         <translation>Ctrl+R</translation>
     </message>
@@ -634,7 +732,7 @@
         <translation>Přidat externí &amp;vrstvu dlaždic...</translation>
     </message>
     <message>
-        <location line="-332"/>
+        <location line="-346"/>
         <source>&amp;New</source>
         <translation type="unfinished"></translation>
     </message>
@@ -644,12 +742,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+49"/>
+        <source>Unload World</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Snapping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>Tileset</source>
         <translation type="unfinished">Sada dlaždic</translation>
     </message>
@@ -659,7 +762,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="+31"/>
+        <source>Ctrl+Alt+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+52"/>
         <source>Export As &amp;Image...</source>
         <translation>Exportovat jako &amp;obrázek...</translation>
     </message>
@@ -729,7 +837,12 @@
         <translation>Znovu načíst</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+24"/>
+        <source>Ctrl+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>User Manual</source>
         <translation type="unfinished"></translation>
     </message>
@@ -764,7 +877,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-305"/>
+        <location line="+8"/>
+        <source>For Hovered Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Load World...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Highlight Hovered Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-329"/>
         <source>New &amp;Tileset...</source>
         <translation>Nová sada &amp;dlaždic...</translation>
     </message>
@@ -829,7 +957,7 @@
         <translation>Přidat nová pravidla automatického mapování</translation>
     </message>
     <message>
-        <location filename="../src/tiled/propertybrowser.cpp" line="+751"/>
+        <location filename="../src/tiled/propertybrowser.cpp" line="+757"/>
         <source>All Files (*)</source>
         <translation>Všechny soubory (*)</translation>
     </message>
@@ -837,7 +965,7 @@
 <context>
     <name>MapDocument</name>
     <message>
-        <location filename="../src/tiled/adjusttileindexes.cpp" line="+178"/>
+        <location filename="../src/tiled/adjusttileindexes.cpp" line="+188"/>
         <source>Tile</source>
         <translation>Dlaždice</translation>
     </message>
@@ -845,7 +973,7 @@
 <context>
     <name>MapReader</name>
     <message>
-        <location filename="../src/libtiled/mapreader.cpp" line="+148"/>
+        <location filename="../src/libtiled/mapreader.cpp" line="+164"/>
         <source>Not a map file.</source>
         <translation>Toto není soubor s mapou.</translation>
     </message>
@@ -855,7 +983,12 @@
         <translation>Toto není soubor se sadou dlaždic.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+17"/>
+        <source>Not a template file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>%3
 
 Line %1, column %2</source>
@@ -874,91 +1007,92 @@ Line %1, column %2</source>
         <translation>Nepodařilo se přečíst soubor: %1</translation>
     </message>
     <message>
-        <location line="+32"/>
-        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+59"/>
+        <location line="+33"/>
+        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+62"/>
         <source>Unsupported map orientation: &quot;%1&quot;</source>
         <translation>Nepodporovaná orientace mapy: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location line="+98"/>
+        <location line="+100"/>
         <location line="+26"/>
-        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+142"/>
+        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+161"/>
         <source>Invalid tileset parameters for tileset &apos;%1&apos;</source>
         <translation>Špatné parametry sady dlaždic &apos;%1&apos;</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+45"/>
         <source>Invalid tile ID: %1</source>
         <translation>Neplatné ID dlaždice: %1</translation>
     </message>
     <message>
-        <location line="+265"/>
+        <location line="+402"/>
         <source>Too many &lt;tile&gt; elements</source>
         <translation>Příliš mnoho elementů &lt;title&gt;</translation>
     </message>
     <message>
-        <location line="+44"/>
-        <location line="+43"/>
-        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+240"/>
+        <location line="+48"/>
+        <location line="+50"/>
+        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+638"/>
         <source>Invalid tile: %1</source>
         <translation>Neplatné jméno: %1</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+32"/>
+        <location filename="../src/libtiled/varianttomapconverter.cpp" line="-276"/>
         <source>Invalid draw order: %1</source>
         <translation>Neplatné pořadí vykreslování: %1</translation>
     </message>
     <message>
-        <location line="+155"/>
+        <location line="+183"/>
         <source>Invalid points data for polygon</source>
         <translation>Špatná data bodů pro polygon</translation>
     </message>
     <message>
-        <location line="-284"/>
-        <location filename="../src/libtiled/varianttomapconverter.cpp" line="-88"/>
+        <location line="-349"/>
+        <location filename="../src/libtiled/varianttomapconverter.cpp" line="-46"/>
         <source>Unknown encoding: %1</source>
         <translation>Neplatné kódování: %1</translation>
     </message>
     <message>
-        <location line="-216"/>
+        <location line="-327"/>
         <source>Error reading embedded image for tile %1</source>
         <translation>Chyba při načítání vloženého obrázku dlaždice %1</translation>
     </message>
     <message>
-        <location line="+211"/>
+        <location line="+322"/>
         <location filename="../src/libtiled/varianttomapconverter.cpp" line="-4"/>
         <source>Compression method &apos;%1&apos; not supported</source>
         <translation>Kompresní metoda &apos;%1&apos; není podporována</translation>
     </message>
     <message>
-        <location line="+58"/>
-        <location line="+19"/>
-        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+15"/>
-        <location line="+39"/>
+        <location line="+88"/>
+        <location line="+23"/>
+        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+280"/>
+        <location line="+40"/>
         <source>Corrupt layer data for layer &apos;%1&apos;</source>
         <translation>Špatná data vrstvy &apos;%1&apos;</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <location filename="../src/libtiled/varianttomapconverter.cpp" line="-28"/>
+        <location line="+14"/>
+        <location filename="../src/libtiled/varianttomapconverter.cpp" line="-29"/>
         <source>Unable to parse tile at (%1,%2) on layer &apos;%3&apos;</source>
         <translation>Nepodařilo se přečíst jméno na (%1, %2) ve vrstvě &apos;%3&apos;</translation>
     </message>
     <message>
-        <location line="-28"/>
-        <location line="+44"/>
-        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+31"/>
+        <location line="-34"/>
+        <location line="+51"/>
+        <location filename="../src/libtiled/varianttomapconverter.cpp" line="+32"/>
         <source>Tile used but no tilesets specified</source>
         <translation>Použití dlaždice bez sady dlaždic</translation>
     </message>
     <message>
-        <location filename="../src/libtiled/mapwriter.cpp" line="+117"/>
+        <location filename="../src/libtiled/mapwriter.cpp" line="+124"/>
         <source>Could not open file for writing.</source>
         <translation>Nepodařilo se otevřít soubor pro zápis.</translation>
     </message>
     <message>
-        <location filename="../src/libtiled/varianttomapconverter.cpp" line="-178"/>
+        <location filename="../src/libtiled/varianttomapconverter.cpp" line="-517"/>
+        <location line="+27"/>
         <source>Invalid (negative) tile id: %1</source>
         <translation>Neplatné (záporné) ID dlaždice: %1</translation>
     </message>
@@ -971,31 +1105,41 @@ Line %1, column %2</source>
         <translation>Nová mapa</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+64"/>
         <source>Map size</source>
         <translation>Velikost mapy</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <location line="+68"/>
+        <location line="+34"/>
+        <location line="+77"/>
         <source>Width:</source>
         <translation>Šířka:</translation>
     </message>
     <message>
-        <location line="-58"/>
+        <location line="-93"/>
         <location line="+26"/>
         <source> tiles</source>
         <extracomment>Remember starting with a space.</extracomment>
         <translation> dlaždic</translation>
     </message>
     <message>
-        <location line="-10"/>
-        <location line="+68"/>
+        <location line="-38"/>
+        <source>Fixed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <location line="+77"/>
         <source>Height:</source>
         <translation>Výška:</translation>
     </message>
     <message>
-        <location line="-32"/>
+        <location line="-42"/>
+        <source>Infinite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Tile size</source>
         <translation>Velikost dlaždice</translation>
     </message>
@@ -1007,7 +1151,7 @@ Line %1, column %2</source>
         <translation> px</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="-202"/>
         <source>Map</source>
         <translation>Mapa</translation>
     </message>
@@ -1031,7 +1175,7 @@ Line %1, column %2</source>
     <name>NewTilesetDialog</name>
     <message>
         <location filename="../src/tiled/newtilesetdialog.ui" line="+14"/>
-        <location filename="../src/tiled/newtilesetdialog.cpp" line="+260"/>
+        <location filename="../src/tiled/newtilesetdialog.cpp" line="+269"/>
         <source>New Tileset</source>
         <translation>Nová sada</translation>
     </message>
@@ -1136,9 +1280,17 @@ Line %1, column %2</source>
     </message>
 </context>
 <context>
+    <name>NoTilesetWidget</name>
+    <message>
+        <location filename="../src/tiled/tilesetdock.cpp" line="+85"/>
+        <source>New Tileset...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ObjectTypes</name>
     <message>
-        <location filename="../src/tiled/objecttypes.cpp" line="+266"/>
+        <location filename="../src/libtiled/objecttypes.cpp" line="+251"/>
         <source>Could not open file for writing.</source>
         <translation>Nepodařilo se otevřít soubor pro zápis.</translation>
     </message>
@@ -1241,8 +1393,8 @@ Line %1, column %2</source>
     </message>
     <message>
         <location line="+5"/>
-        <source>Selected Layer</source>
-        <translation>Vybraná vrstva</translation>
+        <source>Selected Layers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1306,12 +1458,12 @@ Line %1, column %2</source>
         <translation>Ukládání a načítání</translation>
     </message>
     <message>
-        <location filename="../src/tiled/propertybrowser.cpp" line="-652"/>
+        <location filename="../src/tiled/propertybrowser.cpp" line="+1105"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../src/tiled/newmapdialog.cpp" line="+82"/>
+        <location filename="../src/tiled/newmapdialog.cpp" line="+92"/>
         <location filename="../src/tiled/propertybrowser.cpp" line="+1"/>
         <source>Base64 (uncompressed)</source>
         <translation>Baze64 (nekomprimované)</translation>
@@ -1373,22 +1525,23 @@ Line %1, column %2</source>
         <translation>Ukládat v mapách &amp;DTD referenci</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+78"/>
+        <location line="+6"/>
         <source>Interface</source>
         <translation>Rozhraní</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+39"/>
         <source>&amp;Language:</source>
         <translation>&amp;Jazyk:</translation>
     </message>
     <message>
-        <location line="-7"/>
+        <location line="-17"/>
         <source>Hardware &amp;accelerated drawing (OpenGL)</source>
         <translation>Hardwarově &amp;akcelerované vykreslování (OpenGL)</translation>
     </message>
     <message>
-        <location line="-33"/>
+        <location line="-99"/>
         <source>Open last files on startup</source>
         <translation>Otevřít při startu posledně otevřené soubory</translation>
     </message>
@@ -1403,40 +1556,64 @@ Line %1, column %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+10"/>
+        <source>Export Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Resolve object types and properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Detach templates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Embed tilesets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+59"/>
         <source>Grid color:</source>
         <translation>Barva mřížky:</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+46"/>
         <source>Fine grid divisions:</source>
         <translation>Dílků jemné mrížky:</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-16"/>
         <source> pixels</source>
         <translation> px</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="-10"/>
         <source>Object line width:</source>
         <translation>Šířka čáry kolem objektů:</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <location line="+6"/>
+        <location line="+49"/>
+        <source>Mouse wheel &amp;zooms by default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tiled/preferencesdialog.cpp" line="+60"/>
-        <location line="+131"/>
+        <location filename="../src/tiled/preferencesdialog.cpp" line="+64"/>
+        <location line="+149"/>
         <source>Native</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-130"/>
-        <location line="+131"/>
+        <location line="-148"/>
+        <location line="+149"/>
         <source>Tiled Fusion</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1485,7 +1662,7 @@ Line %1, column %2</source>
 <context>
     <name>Python::PythonMapFormat</name>
     <message>
-        <location filename="../src/plugins/python/pythonplugin.cpp" line="+268"/>
+        <location filename="../src/plugins/python/pythonplugin.cpp" line="+282"/>
         <source>-- Using script %1 to read %2</source>
         <translation>-- Čtení %2 skriptem %1</translation>
     </message>
@@ -1508,7 +1685,7 @@ Line %1, column %2</source>
 <context>
     <name>Python::PythonPlugin</name>
     <message>
-        <location line="-164"/>
+        <location line="-175"/>
         <source>Reloading Python scripts</source>
         <translation>Znovunačtení Pythoních skriptů</translation>
     </message>
@@ -1710,7 +1887,7 @@ Line %1, column %2</source>
         <translation>...</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+28"/>
         <source>Select Font</source>
         <translation>Výběr fontu</translation>
     </message>
@@ -1962,7 +2139,7 @@ Line %1, column %2</source>
 <context>
     <name>QtTreePropertyBrowser</name>
     <message>
-        <location filename="../src/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="+508"/>
+        <location filename="../src/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="+512"/>
         <source>Property</source>
         <translation>Vlastnost</translation>
     </message>
@@ -2092,6 +2269,89 @@ Line %1, column %2</source>
     </message>
 </context>
 <context>
+    <name>Tbin::TbinMapFormat</name>
+    <message>
+        <location filename="../src/plugins/tbin/tbinplugin.cpp" line="+109"/>
+        <source>Could not open file for reading.</source>
+        <translation type="unfinished">Nepodařilo se otevřít soubor pro čtení.</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Tilesheet must have equal spacings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Tilesheet must have equal margins.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>Different tile sizes per layer are not supported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Invalid animation frame.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+112"/>
+        <source>Only object and tile layers supported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Could not open file for writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Exception: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Tbin map files (*.tbin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TbinMapFormat</name>
+    <message>
+        <location filename="../src/plugins/tbin/tbin/Map.cpp" line="+99"/>
+        <location line="+23"/>
+        <source>Bad property type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <location line="+68"/>
+        <source>Bad layer tile data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Failed to open file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>File is not a tbin file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Failed to open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/tbin/tbinplugin.cpp" line="-255"/>
+        <source>Unsupported property type</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Tengine::TenginePlugin</name>
     <message>
         <location filename="../src/plugins/tengine/tengineplugin.cpp" line="+49"/>
@@ -2120,8 +2380,23 @@ Line %1, column %2</source>
         <translation>Editor animovaných dlaždic</translation>
     </message>
     <message>
-        <location line="+102"/>
-        <location filename="../src/tiled/tileanimationeditor.cpp" line="+508"/>
+        <location line="+11"/>
+        <source>Frame Duration: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source> ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+98"/>
+        <location filename="../src/tiled/tileanimationeditor.cpp" line="+564"/>
         <source>Preview</source>
         <translation>Náhled</translation>
     </message>
@@ -2129,8 +2404,8 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::AbstractObjectTool</name>
     <message>
-        <location filename="../src/tiled/abstractobjecttool.cpp" line="+186"/>
-        <location line="+70"/>
+        <location filename="../src/tiled/abstractobjecttool.cpp" line="+265"/>
+        <location line="+200"/>
         <source>Reset Tile Size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2153,7 +2428,38 @@ Line %1, column %2</source>
         </translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+16"/>
+        <source>Replace Tile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Replace With Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Replace With Template &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Save As Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Detach</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Reset Template Instance(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-334"/>
+        <location line="+341"/>
         <source>Flip Horizontally</source>
         <translation>Překlopit vodorovně</translation>
     </message>
@@ -2163,7 +2469,8 @@ Line %1, column %2</source>
         <translation>X</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-340"/>
+        <location line="+341"/>
         <source>Flip Vertically</source>
         <translation>Překlopit svisle</translation>
     </message>
@@ -2213,7 +2520,7 @@ Line %1, column %2</source>
         <translation>End</translation>
     </message>
     <message numerus="yes">
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Move %n Object(s) to Layer</source>
         <translation>
             <numerusform>Přesunout objekt do vrstvy</numerusform>
@@ -2222,15 +2529,38 @@ Line %1, column %2</source>
         </translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+13"/>
         <source>Object &amp;Properties...</source>
         <translation>&amp;Vlastnosti objektu...</translation>
     </message>
 </context>
 <context>
+    <name>Tiled::Internal::AbstractTileSelectionTool</name>
+    <message>
+        <location filename="../src/tiled/abstracttileselectiontool.cpp" line="+137"/>
+        <source>Replace Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Add Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Subtract Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Intersect Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Tiled::Internal::AbstractTileTool</name>
     <message>
-        <location filename="../src/tiled/abstracttiletool.cpp" line="+124"/>
+        <location filename="../src/tiled/abstracttiletool.cpp" line="+128"/>
         <source>empty</source>
         <translation>—</translation>
     </message>
@@ -2238,27 +2568,32 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::AutoMapper</name>
     <message>
-        <location filename="../src/tiled/automapper.cpp" line="+124"/>
+        <location filename="../src/tiled/automapper.cpp" line="+119"/>
         <source>&apos;%1&apos;: Property &apos;%2&apos; = &apos;%3&apos; does not make sense. Ignoring this property.</source>
         <translation>&apos;%1&apos;: Vlastnoost %2 = &apos;%3&apos; nedává smysl. Ignoruji tuto vlastnost.</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+82"/>
         <source>Did you forget an underscore in layer &apos;%1&apos;?</source>
         <translation>Zapomenuté podtržítko ve vrstvě &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+72"/>
         <source>Layer &apos;%1&apos; is not recognized as a valid layer for Automapping.</source>
         <translation>Vrstva &apos;%1&apos; není platná vrstva pro automatické mapování.</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-104"/>
         <source>&apos;regions_input&apos; layer must not occur more than once.</source>
         <translation>Vrstva &apos;regions_input&apos; se nesmí objevit víc než jednou.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="-25"/>
+        <source>&apos;%1&apos;: Property &apos;%2&apos; = &apos;%3&apos; on layer &apos;%4&apos; does not make sense. Ignoring this property.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
         <location line="+13"/>
         <source>&apos;regions_*&apos; layers must be tile layers.</source>
         <translation>Vrstvy &apos;regions_*&apos; musí být dlaždicové.</translation>
@@ -2274,7 +2609,7 @@ Line %1, column %2</source>
         <translation>Vrstvy &apos;input_*&apos; a &apos;inputnot_*&apos; musí být dlaždicové.</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+56"/>
         <source>No &apos;regions&apos; or &apos;regions_input&apos; layer found.</source>
         <translation>Nenalezena vrstva &apos;regions&apos; nebo &apos;regions_input&apos;.</translation>
     </message>
@@ -2288,11 +2623,16 @@ Line %1, column %2</source>
         <source>No input_&lt;name&gt; layer found!</source>
         <translation>Nenalezena vrstva &apos;input_&lt;name&gt;&apos;!</translation>
     </message>
+    <message>
+        <location line="+3"/>
+        <source>No output_&lt;name&gt; layer found!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Tiled::Internal::AutomappingManager</name>
     <message>
-        <location filename="../src/tiled/automappingmanager.cpp" line="+103"/>
+        <location filename="../src/tiled/automappingmanager.cpp" line="+122"/>
         <source>Apply AutoMap rules</source>
         <translation>Použít pravidla automatického mapování</translation>
     </message>
@@ -2328,19 +2668,29 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::BrokenLinksModel</name>
     <message>
-        <location filename="../src/tiled/brokenlinks.cpp" line="+202"/>
+        <location filename="../src/tiled/brokenlinks.cpp" line="+274"/>
         <source>Tileset image</source>
         <translation>Obrázek sady dlaždic</translation>
     </message>
     <message>
-        <location line="-2"/>
+        <location line="-4"/>
         <source>Tileset</source>
         <translation>Sada dlaždic</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Template tileset</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Tile image</source>
         <translation>Obrázek sady dlaždic</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Template</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+22"/>
@@ -2372,38 +2722,55 @@ Line %1, column %2</source>
     </message>
     <message>
         <location line="+3"/>
-        <location line="+79"/>
-        <location line="+5"/>
+        <location line="+86"/>
+        <location line="+8"/>
         <source>Locate File...</source>
         <translation>Najít soubor...</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-5"/>
+        <source>Open Template...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Open Tileset...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+31"/>
+        <location line="+44"/>
         <source>Locate File</source>
         <translation>Najít soubor</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+50"/>
+        <source>Locate Object Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>Error Loading Image</source>
         <translation>Chyba při načítání obrázku</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+48"/>
+        <source>Error Reading Object Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-89"/>
+        <location line="+13"/>
         <source>All Files (*)</source>
         <translation>Všechny soubory (*)</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-10"/>
         <source>Locate External Tileset</source>
         <translation>Najít externí sadu dlaždic</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+68"/>
         <source>Error Reading Tileset</source>
         <translation>Chyba při otevírání sady slaždic</translation>
     </message>
@@ -2411,14 +2778,14 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::BucketFillTool</name>
     <message>
-        <location filename="../src/tiled/bucketfilltool.cpp" line="+40"/>
-        <location line="+194"/>
+        <location filename="../src/tiled/bucketfilltool.cpp" line="+44"/>
+        <location line="+135"/>
         <source>Bucket Fill Tool</source>
         <translation>Výplň</translation>
     </message>
     <message>
-        <location line="-191"/>
-        <location line="+192"/>
+        <location line="-132"/>
+        <location line="+133"/>
         <source>F</source>
         <translation>V</translation>
     </message>
@@ -2426,7 +2793,7 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::ClipboardManager</name>
     <message>
-        <location filename="../src/tiled/clipboardmanager.cpp" line="+217"/>
+        <location filename="../src/tiled/clipboardmanager.cpp" line="+246"/>
         <source>Paste Objects</source>
         <translation>Vložit objekty</translation>
     </message>
@@ -2457,7 +2824,7 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::CommandDataModel</name>
     <message>
-        <location filename="../src/tiled/commanddatamodel.cpp" line="+57"/>
+        <location filename="../src/tiled/commanddatamodel.cpp" line="+60"/>
         <source>Open in text editor</source>
         <translation>Otevřít v textovém editoru</translation>
     </message>
@@ -2508,27 +2875,27 @@ Line %1, column %2</source>
         <translation>Posunout nahoru</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+5"/>
         <source>Move Down</source>
         <translation>Posunout dolů</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
         <source>Execute</source>
         <translation>Provést</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+3"/>
         <source>Execute in Terminal</source>
         <translation>Provést v terminálu</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+5"/>
         <source>Delete</source>
         <translation>Smazat</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+80"/>
         <source>%1 (copy)</source>
         <translation>%1 (kopie)</translation>
     </message>
@@ -2541,20 +2908,25 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::CommandDialog</name>
     <message>
-        <location filename="../src/tiled/commanddialog.cpp" line="+46"/>
+        <location filename="../src/tiled/commanddialog.cpp" line="+48"/>
         <source>Edit Commands</source>
         <translation>Upravit příkazy</translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+121"/>
         <source>Select Executable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Select Working Directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Tiled::Internal::CommandManager</name>
     <message>
-        <location filename="../src/tiled/commandmanager.cpp" line="+113"/>
+        <location filename="../src/tiled/commandmanager.cpp" line="+127"/>
         <source>Edit Commands...</source>
         <translation type="unfinished">Upravit příkazy...</translation>
     </message>
@@ -2562,7 +2934,7 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::CommandProcess</name>
     <message>
-        <location filename="../src/tiled/command.cpp" line="+150"/>
+        <location filename="../src/tiled/command.cpp" line="+195"/>
         <source>Unable to create/open %1</source>
         <translation>Nepodařilo se vytvořit/otevřít %1</translation>
     </message>
@@ -2573,6 +2945,11 @@ Line %1, column %2</source>
     </message>
     <message>
         <location line="+26"/>
+        <source>Executing: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>The command failed to start.</source>
         <translation>Příkaz se nespustil.</translation>
     </message>
@@ -2600,7 +2977,7 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::ConsoleDock</name>
     <message>
-        <location filename="../src/tiled/consoledock.cpp" line="+36"/>
+        <location filename="../src/tiled/consoledock.cpp" line="+37"/>
         <source>Debug Console</source>
         <translation>Ladicí konzole</translation>
     </message>
@@ -2608,7 +2985,7 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::CreateEllipseObjectTool</name>
     <message>
-        <location filename="../src/tiled/createellipseobjecttool.cpp" line="+39"/>
+        <location filename="../src/tiled/createellipseobjecttool.cpp" line="+47"/>
         <source>Insert Ellipse</source>
         <translation>Vložit elipsu</translation>
     </message>
@@ -2619,17 +2996,22 @@ Line %1, column %2</source>
     </message>
 </context>
 <context>
-    <name>Tiled::Internal::CreateObjectTool</name>
+    <name>Tiled::Internal::CreatePointObjectTool</name>
     <message>
-        <location filename="../src/tiled/createobjecttool.cpp" line="+46"/>
-        <source>O</source>
-        <translation>O</translation>
+        <location filename="../src/tiled/createpointobjecttool.cpp" line="+51"/>
+        <source>Insert Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>I</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Tiled::Internal::CreatePolygonObjectTool</name>
     <message>
-        <location filename="../src/tiled/createpolygonobjecttool.cpp" line="+39"/>
+        <location filename="../src/tiled/createpolygonobjecttool.cpp" line="+172"/>
         <source>Insert Polygon</source>
         <translation>Vložit polygon</translation>
     </message>
@@ -2638,24 +3020,21 @@ Line %1, column %2</source>
         <source>P</source>
         <translation>P</translation>
     </message>
-</context>
-<context>
-    <name>Tiled::Internal::CreatePolylineObjectTool</name>
     <message>
-        <location filename="../src/tiled/createpolylineobjecttool.cpp" line="+39"/>
-        <source>Insert Polyline</source>
-        <translation>Vložit lomenou čáru</translation>
+        <location line="+122"/>
+        <source>Connect Polylines</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>L</source>
-        <translation>L</translation>
+        <location line="+202"/>
+        <source>Create Polygon</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Tiled::Internal::CreateRectangleObjectTool</name>
     <message>
-        <location filename="../src/tiled/createrectangleobjecttool.cpp" line="+39"/>
+        <location filename="../src/tiled/createrectangleobjecttool.cpp" line="+47"/>
         <source>Insert Rectangle</source>
         <translation>Vložit obdélník</translation>
     </message>
@@ -2666,16 +3045,29 @@ Line %1, column %2</source>
     </message>
 </context>
 <context>
+    <name>Tiled::Internal::CreateTemplateTool</name>
+    <message>
+        <location filename="../src/tiled/createtemplatetool.cpp" line="+53"/>
+        <source>Insert Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>V</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Tiled::Internal::CreateTextObjectTool</name>
     <message>
-        <location filename="../src/tiled/createtextobjecttool.cpp" line="+70"/>
+        <location filename="../src/tiled/createtextobjecttool.cpp" line="+65"/>
         <source>Insert Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>X</source>
-        <translation type="unfinished">X</translation>
+        <source>E</source>
+        <translation type="unfinished">G</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2686,7 +3078,7 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::CreateTileObjectTool</name>
     <message>
-        <location filename="../src/tiled/createtileobjecttool.cpp" line="+81"/>
+        <location filename="../src/tiled/createtileobjecttool.cpp" line="+66"/>
         <source>Insert Tile</source>
         <translation>Vložit dlaždici</translation>
     </message>
@@ -2699,7 +3091,12 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::DocumentManager</name>
     <message>
-        <location filename="../src/tiled/documentmanager.cpp" line="+473"/>
+        <location filename="../src/tiled/documentmanager.cpp" line="+461"/>
+        <source>Unrecognized file format.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+257"/>
         <location line="+18"/>
         <source>%1:
 
@@ -2709,17 +3106,22 @@ Line %1, column %2</source>
 %2</translation>
     </message>
     <message>
-        <location line="+110"/>
-        <source>Copy File Path</source>
+        <location line="+111"/>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Open Containing Folder...</source>
+        <location line="+7"/>
+        <source>Close Other Tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+253"/>
+        <location line="+5"/>
+        <source>Close Tabs to the Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+241"/>
         <source>Tileset Columns Changed</source>
         <translation>Změna počtu sloupců sady dlaždic</translation>
     </message>
@@ -2732,19 +3134,24 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::EditPolygonTool</name>
     <message>
-        <location filename="../src/tiled/editpolygontool.cpp" line="+129"/>
-        <location line="+209"/>
+        <location filename="../src/tiled/editpolygontool.cpp" line="+58"/>
+        <location line="+294"/>
         <source>Edit Polygons</source>
         <translation>Editace polygonů</translation>
     </message>
     <message>
-        <location line="-207"/>
-        <location line="+208"/>
-        <source>E</source>
-        <translation>G</translation>
+        <location line="-292"/>
+        <location line="+293"/>
+        <source>O</source>
+        <translation type="unfinished">O</translation>
+    </message>
+    <message>
+        <location line="-23"/>
+        <source>Split Segment</source>
+        <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+230"/>
+        <location line="+265"/>
         <source>Move %n Point(s)</source>
         <translation>
             <numerusform>Posunutí bodu</numerusform>
@@ -2753,8 +3160,8 @@ Line %1, column %2</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location line="+26"/>
-        <location line="+45"/>
+        <location line="+58"/>
+        <location line="+94"/>
         <source>Delete %n Node(s)</source>
         <translation>
             <numerusform>Smazat bod</numerusform>
@@ -2763,29 +3170,40 @@ Line %1, column %2</source>
         </translation>
     </message>
     <message>
-        <location line="-40"/>
-        <location line="+215"/>
+        <location line="-89"/>
+        <location line="+264"/>
         <source>Join Nodes</source>
         <translation>Sloučit body</translation>
     </message>
     <message>
-        <location line="-214"/>
-        <location line="+250"/>
+        <location line="-263"/>
+        <location line="+299"/>
         <source>Split Segments</source>
         <translation>Rozdělit segmenty</translation>
+    </message>
+    <message>
+        <location line="-298"/>
+        <location line="+365"/>
+        <source>Delete Segment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-334"/>
+        <source>Extend Polyline</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Tiled::Internal::Eraser</name>
     <message>
         <location filename="../src/tiled/eraser.cpp" line="+35"/>
-        <location line="+56"/>
+        <location line="+57"/>
         <source>Eraser</source>
         <translation>Guma</translation>
     </message>
     <message>
-        <location line="-53"/>
-        <location line="+54"/>
+        <location line="-54"/>
+        <location line="+55"/>
         <source>E</source>
         <translation>G</translation>
     </message>
@@ -2793,12 +3211,12 @@ Line %1, column %2</source>
 <context>
     <name>Tiled::Internal::ExportAsImageDialog</name>
     <message>
-        <location filename="../src/tiled/exportasimagedialog.cpp" line="+64"/>
+        <location filename="../src/tiled/exportasimagedialog.cpp" line="+67"/>
         <source>Export</source>
         <translation>Exportovat</translation>
     </message>
     <message>
-        <location line="+73"/>
+        <location line="+68"/>
         <source>Export as Image</source>
         <translation>Exportovat jako obrázek</translation>
     </message>
@@ -2810,7 +3228,7 @@ Do you want to replace it?</source>
 Má se přepsat?</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+65"/>
         <source>Out of Memory</source>
         <translation>Nedostatek paměti</translation>
     </message>
@@ -2820,7 +3238,7 @@ Má se přepsat?</translation>
         <translation>Pro tento obrázek se nepodařilo alokovat dostatek paměti. Zkuste menší zoom, nebo 64-bitovou verzi Tiled.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="-16"/>
         <source>Image too Big</source>
         <translation>Obrázek je příliš velký</translation>
     </message>
@@ -2830,7 +3248,7 @@ Má se přepsat?</translation>
         <translation>Obrázek by měl %1 x %2 pixelů a zabral by %3 GB paměti. Tiled s tak velkým obrázkem nemůže pracovat. Zkuste menší zoom.</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+37"/>
         <source>Image</source>
         <translation>Obrázek</translation>
     </message>
@@ -2856,7 +3274,7 @@ Má se přepsat?</translation>
 <context>
     <name>Tiled::Internal::FileEdit</name>
     <message>
-        <location filename="../src/tiled/fileedit.cpp" line="+113"/>
+        <location filename="../src/tiled/fileedit.cpp" line="+127"/>
         <source>Choose a File</source>
         <translation>Vyberte soubor</translation>
     </message>
@@ -2864,7 +3282,7 @@ Má se přepsat?</translation>
 <context>
     <name>Tiled::Internal::LayerDock</name>
     <message>
-        <location filename="../src/tiled/layerdock.cpp" line="+211"/>
+        <location filename="../src/tiled/layerdock.cpp" line="+229"/>
         <source>Layers</source>
         <translation>Vrstvy</translation>
     </message>
@@ -2882,9 +3300,19 @@ Má se přepsat?</translation>
 <context>
     <name>Tiled::Internal::LayerModel</name>
     <message>
-        <location filename="../src/tiled/layermodel.cpp" line="+209"/>
+        <location filename="../src/tiled/layermodel.cpp" line="+235"/>
         <source>Layer</source>
         <translation>Vrstva</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Visible</source>
+        <translation type="unfinished">Viditelnost</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Locked</source>
+        <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
         <location line="+74"/>
@@ -2896,7 +3324,7 @@ Má se přepsat?</translation>
         </translation>
     </message>
     <message>
-        <location line="+203"/>
+        <location line="+238"/>
         <source>Show Other Layers</source>
         <translation>Zobrazení ostatních vrstev</translation>
     </message>
@@ -2905,18 +3333,28 @@ Má se přepsat?</translation>
         <source>Hide Other Layers</source>
         <translation>Skrytí ostatních vrstev</translation>
     </message>
+    <message>
+        <location line="+31"/>
+        <source>Lock Other Layers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Unlock Other Layers</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Tiled::Internal::LayerOffsetTool</name>
     <message>
-        <location filename="../src/tiled/layeroffsettool.cpp" line="+39"/>
-        <location line="+86"/>
+        <location filename="../src/tiled/layeroffsettool.cpp" line="+40"/>
+        <location line="+84"/>
         <source>Offset Layers</source>
         <translation>Posunutí vrstev</translation>
     </message>
     <message>
-        <location line="-84"/>
-        <location line="+85"/>
+        <location line="-82"/>
+        <location line="+83"/>
         <source>M</source>
         <translation>M</translation>
     </message>
@@ -2924,14 +3362,14 @@ Má se přepsat?</translation>
 <context>
     <name>Tiled::Internal::MagicWandTool</name>
     <message>
-        <location filename="../src/tiled/magicwandtool.cpp" line="+39"/>
-        <location line="+58"/>
+        <location filename="../src/tiled/magicwandtool.cpp" line="+33"/>
+        <location line="+22"/>
         <source>Magic Wand</source>
         <translation>Kouzelná hůlka</translation>
     </message>
     <message>
-        <location line="-55"/>
-        <location line="+56"/>
+        <location line="-19"/>
+        <location line="+20"/>
         <source>W</source>
         <translation>W</translation>
     </message>
@@ -2945,13 +3383,13 @@ Má se přepsat?</translation>
     </message>
     <message>
         <location line="+26"/>
-        <location line="+73"/>
+        <location line="+70"/>
         <source>Undo</source>
         <translation type="unfinished">Zpět</translation>
     </message>
     <message>
-        <location line="-72"/>
-        <location line="+71"/>
+        <location line="-69"/>
+        <location line="+68"/>
         <source>Redo</source>
         <translation type="unfinished">Znovu</translation>
     </message>
@@ -2974,7 +3412,7 @@ Má se přepsat?</translation>
 <context>
     <name>Tiled::Internal::MainWindow</name>
     <message>
-        <location filename="../src/tiled/mainwindow.cpp" line="+148"/>
+        <location filename="../src/tiled/mainwindow.cpp" line="+240"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
@@ -2984,12 +3422,7 @@ Má se přepsat?</translation>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location line="+517"/>
-        <source>Open Map</source>
-        <translation>Otevřít mapu</translation>
-    </message>
-    <message>
-        <location line="-442"/>
+        <location line="+79"/>
         <source>Ctrl+T</source>
         <translation>Ctrl+T</translation>
     </message>
@@ -3009,8 +3442,8 @@ Má se přepsat?</translation>
         <translation>-</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <location line="+1358"/>
+        <location line="+20"/>
+        <location line="+1184"/>
         <source>&amp;Layer</source>
         <translation>&amp;Vrstva</translation>
     </message>
@@ -3020,17 +3453,17 @@ Má se přepsat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1236"/>
+        <location line="-1026"/>
         <source>Object Types Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location filename="../src/tiled/tileseteditor.cpp" line="+614"/>
         <source>Ctrl+Shift+O</source>
         <translation>Ctrl+Shift+O</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location filename="../src/tiled/mainwindow.cpp" line="+43"/>
         <source>Ctrl+Shift+Tab</source>
         <translation>Ctrl+Shift+Tab</translation>
     </message>
@@ -3045,41 +3478,30 @@ Má se přepsat?</translation>
         <translation>Alt+C</translation>
     </message>
     <message>
-        <location line="+216"/>
-        <location line="+261"/>
-        <location line="+294"/>
+        <location line="-437"/>
+        <location line="+639"/>
+        <location line="+368"/>
         <source>All Files (*)</source>
         <translation>Všechny soubory (*)</translation>
     </message>
     <message>
-        <location line="-421"/>
-        <source>untitled.tmx</source>
-        <translation>mapa.tmx</translation>
-    </message>
-    <message>
-        <location line="-23"/>
+        <location filename="../src/tiled/documentmanager.cpp" line="-567"/>
         <source>Extension Mismatch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-181"/>
-        <location line="+19"/>
+        <location filename="../src/tiled/mainwindow.cpp" line="-418"/>
         <source>Error Opening File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-19"/>
-        <source>Unrecognized file format.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+106"/>
-        <location line="+149"/>
+        <location filename="../src/tiled/documentmanager.cpp" line="-40"/>
+        <location filename="../src/tiled/mainwindow.cpp" line="+136"/>
         <source>Error Saving File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-73"/>
+        <location line="+41"/>
         <source>The file extension does not match the chosen file type.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3089,12 +3511,7 @@ Má se přepsat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>untitled.tsx</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+53"/>
+        <location filename="../src/tiled/mainwindow.cpp" line="+16"/>
         <source>Unsaved Changes</source>
         <translation>Neuložené změny</translation>
     </message>
@@ -3104,18 +3521,17 @@ Má se přepsat?</translation>
         <translation>V mapě jsou neuložené změny. Chcete je uložit?</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+45"/>
         <source>Exported to %1</source>
         <translation>Exportováno jako %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+113"/>
         <source>Error Exporting Map</source>
         <translation>Chyba při exportu mapy</translation>
     </message>
     <message>
-        <location line="-75"/>
+        <location line="-768"/>
         <source>Export As...</source>
         <translation>Exportovat jako...</translation>
     </message>
@@ -3141,7 +3557,32 @@ Please select specific format.</source>
         <translation>Daný soubor má neznámou koncovku.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+71"/>
+        <source>Ctrl+Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+167"/>
+        <source>Load World</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Error Loading World</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+79"/>
+        <source>Reset to Default Layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+269"/>
+        <source>Open File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+789"/>
         <source>Some export files already exist:</source>
         <translation>Některé soubory pro export už existují:</translation>
     </message>
@@ -3156,7 +3597,7 @@ Please select specific format.</source>
         <translation>Přepsat soubory</translation>
     </message>
     <message>
-        <location line="+579"/>
+        <location line="-73"/>
         <source>[*]%1</source>
         <translation>[*] %1</translation>
     </message>
@@ -3166,12 +3607,18 @@ Please select specific format.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+62"/>
+        <location line="+30"/>
+        <source>Error Exporting Map!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+48"/>
         <source>Error Reloading Map</source>
         <translation>Chyba při načítání mapy</translation>
     </message>
     <message>
-        <location line="-321"/>
+        <location line="-399"/>
         <source>Automatic Mapping Warning</source>
         <translation>Varování automatického mapování</translation>
     </message>
@@ -3181,25 +3628,18 @@ Please select specific format.</source>
         <translation>Chyba automatického mapování</translation>
     </message>
     <message>
-        <location line="-951"/>
-        <location line="+1240"/>
+        <location line="-760"/>
+        <location line="+1033"/>
         <source>Views and Toolbars</source>
         <translation>Okna a lišty</translation>
     </message>
     <message>
-        <location line="-1232"/>
-        <location line="+1233"/>
-        <source>Tile Animation Editor</source>
-        <translation>Editor animovaných dlaždic</translation>
-    </message>
-    <message>
-        <location line="-1231"/>
-        <location line="+1232"/>
+        <location filename="../src/tiled/tilecollisiondock.cpp" line="+375"/>
         <source>Tile Collision Editor</source>
         <translation>Editor kolizí</translation>
     </message>
     <message>
-        <location line="-1188"/>
+        <location filename="../src/tiled/mainwindow.cpp" line="-988"/>
         <source>Alt+Left</source>
         <translation>Alt+Doleva</translation>
     </message>
@@ -3209,30 +3649,47 @@ Please select specific format.</source>
         <translation>Alt+Doprava</translation>
     </message>
     <message>
-        <location line="+793"/>
+        <location line="+592"/>
         <source>Add External Tileset(s)</source>
         <translation>Přidat externí sady dlaždic</translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/abstractobjecttool.cpp" line="-261"/>
+        <location filename="../src/tiled/documentmanager.cpp" line="+19"/>
+        <location line="+20"/>
+        <source>untitled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Save Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Error Saving Template</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Tiled::Internal::MapDocument</name>
     <message>
-        <location filename="../src/tiled/mapdocument.cpp" line="+216"/>
+        <location filename="../src/tiled/mapdocument.cpp" line="+210"/>
         <source>untitled.tmx</source>
         <translation>mapa.tmx</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+83"/>
         <source>Resize Map</source>
         <translation>Změna velikosti mapy</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+75"/>
         <source>Offset Map</source>
         <translation>Posunout mapu</translation>
     </message>
     <message numerus="yes">
-        <location line="+28"/>
+        <location line="+27"/>
         <source>Rotate %n Object(s)</source>
         <translation>
             <numerusform>Otočení objektu</numerusform>
@@ -3257,47 +3714,68 @@ Please select specific format.</source>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+26"/>
+        <location line="+33"/>
         <source>Group %1</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location line="+4"/>
-        <source>Group Layer</source>
-        <translation type="unfinished"></translation>
+    <message numerus="yes">
+        <location line="+2"/>
+        <source>Group %n Layer(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location line="+16"/>
+        <source>Ungroup %n Layer(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location line="+46"/>
+        <source>Duplicate %n Layer(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+32"/>
-        <source>Ungroup Layer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+18"/>
+        <location line="+27"/>
         <source>Copy of %1</source>
         <translation>Kopie %1</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Duplicate Layer</source>
-        <translation>Duplikovat vrstvu</translation>
-    </message>
-    <message>
-        <location line="+26"/>
+        <location line="+46"/>
         <source>Merge Layer Down</source>
         <translation>Sloučit s vrstvou dole</translation>
     </message>
+    <message numerus="yes">
+        <location line="+73"/>
+        <source>Remove %n Layer(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+191"/>
+        <location line="+305"/>
         <source>Tile</source>
         <translation>Dlaždice</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+10"/>
         <source>Tileset Changes</source>
         <translation>Změny v dlaždicích</translation>
     </message>
     <message numerus="yes">
-        <location line="+165"/>
+        <location line="+229"/>
         <source>Duplicate %n Object(s)</source>
         <translation>
             <numerusform>Duplikování objektu</numerusform>
@@ -3306,7 +3784,7 @@ Please select specific format.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location line="+21"/>
+        <location line="+13"/>
         <source>Remove %n Object(s)</source>
         <translation>
             <numerusform>Odstranit objekt</numerusform>
@@ -3315,7 +3793,7 @@ Please select specific format.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location line="+13"/>
+        <location line="+11"/>
         <source>Move %n Object(s) to Layer</source>
         <translation>
             <numerusform>Přesunout objekt do vrstvy</numerusform>
@@ -3345,7 +3823,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::MapDocumentActionHandler</name>
     <message>
-        <location filename="../src/tiled/mapdocumentactionhandler.cpp" line="+180"/>
+        <location filename="../src/tiled/mapdocumentactionhandler.cpp" line="+190"/>
         <source>Select &amp;All</source>
         <translation>Vybrat &amp;vše</translation>
     </message>
@@ -3355,17 +3833,12 @@ Please select specific format.</source>
         <translation>&amp;Zrušit výběr</translation>
     </message>
     <message>
-        <location line="-116"/>
+        <location line="-124"/>
         <source>Ctrl+Shift+A</source>
         <translation>Ctrl+Shift+A</translation>
     </message>
     <message>
-        <location line="+128"/>
-        <source>&amp;Duplicate Layer</source>
-        <translation>&amp;Duplikovat vrstvu</translation>
-    </message>
-    <message>
-        <location line="-98"/>
+        <location line="+31"/>
         <source>Ctrl+Shift+D</source>
         <translation>Ctrl+Shift+D</translation>
     </message>
@@ -3375,22 +3848,32 @@ Please select specific format.</source>
         <translation>Ctrl+Shift+H</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+67"/>
         <source>&amp;Crop to Selection</source>
         <translation>&amp;Vyříznout výběr</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+9"/>
+        <source>&amp;Group Layers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Ungroup Layers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>&amp;Duplicate Layers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>&amp;Merge Layer Down</source>
         <translation>&amp;Sloučit s vrstvou dole</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>&amp;Remove Layer</source>
-        <translation>&amp;Zrušit vrstvu</translation>
-    </message>
-    <message>
-        <location line="-83"/>
+        <location line="-90"/>
         <source>Ctrl+Shift+Up</source>
         <translation>Ctrl+Shift+Nahoru</translation>
     </message>
@@ -3415,22 +3898,32 @@ Please select specific format.</source>
         <translation>Ctrl+PgDown</translation>
     </message>
     <message>
-        <location line="-43"/>
+        <location line="-44"/>
         <source>Ctrl+I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+55"/>
         <source>Ctrl+Shift+Down</source>
         <translation>Ctrl+Shift+Dolů</translation>
     </message>
     <message>
-        <location line="+63"/>
+        <location line="+10"/>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+60"/>
         <source>Invert S&amp;election</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
+        <source>Autocrop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>&amp;Tile Layer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3446,29 +3939,38 @@ Please select specific format.</source>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+3"/>
         <source>&amp;Group Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-2"/>
-        <location line="+274"/>
+        <location line="+1"/>
+        <location line="+320"/>
         <source>Layer via Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-273"/>
-        <location line="+273"/>
+        <location line="-319"/>
+        <location line="+319"/>
         <source>Layer via Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-271"/>
-        <source>&amp;Ungroup Layer</source>
+        <location line="-313"/>
+        <source>&amp;Remove Layers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
+        <source>R&amp;aise Layers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Lower Layers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-3"/>
         <source>Select Pre&amp;vious Layer</source>
         <translation>Vybrat &amp;předchozí vrstvu</translation>
     </message>
@@ -3478,19 +3980,14 @@ Please select specific format.</source>
         <translation>Vybrat &amp;následující vrstvu</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>R&amp;aise Layer</source>
-        <translation>Posunout vrstvu n&amp;ahoru</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>&amp;Lower Layer</source>
-        <translation>Posunout vrstvu &amp;dolů</translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>Show/&amp;Hide all Other Layers</source>
         <translation>&amp;Skrýt/ukázat ostatní vrstvy</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lock/&amp;Unlock all Other Layers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3498,7 +3995,7 @@ Please select specific format.</source>
         <translation>&amp;Vlastnosti vrstvy...</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+39"/>
         <source>&amp;New</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3508,17 +4005,17 @@ Please select specific format.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+33"/>
         <source>Cut</source>
         <translation type="unfinished">Vyjmout</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+46"/>
         <source>Delete</source>
         <translation type="unfinished">Smazat</translation>
     </message>
     <message numerus="yes">
-        <location line="+391"/>
+        <location line="+439"/>
         <source>Duplicate %n Object(s)</source>
         <translation>
             <numerusform>Duplikovat objekt</numerusform>
@@ -3549,27 +4046,12 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::MapEditor</name>
     <message>
-        <location filename="../src/tiled/mapeditor.cpp" line="+252"/>
-        <source>X</source>
-        <translation type="unfinished">X</translation>
+        <location filename="../src/tiled/mapeditor.cpp" line="+665"/>
+        <source>Paste in Place</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Y</source>
-        <translation type="unfinished">Y</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Z</source>
-        <translation type="unfinished">Z</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Shift+Z</source>
-        <translation type="unfinished">Shift+Z</translation>
-    </message>
-    <message>
-        <location line="+419"/>
+        <location line="+187"/>
         <location line="+5"/>
         <source>Error Reading Tileset</source>
         <translation type="unfinished">Chyba při otevírání sady slaždic</translation>
@@ -3580,7 +4062,7 @@ Please select specific format.</source>
         <translation type="unfinished">%1: %2</translation>
     </message>
     <message numerus="yes">
-        <location line="+10"/>
+        <location line="+17"/>
         <source>Add %n Tileset(s)</source>
         <translation type="unfinished">
             <numerusform>Přidání sady dlaždic</numerusform>
@@ -3589,17 +4071,12 @@ Please select specific format.</source>
         </translation>
     </message>
     <message>
-        <location line="+46"/>
-        <source>Random Mode</source>
-        <translation type="unfinished">Náhodný mód</translation>
+        <location line="+57"/>
+        <source>Tool Options</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>D</source>
-        <translation type="unfinished">D</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="-1"/>
         <source>Tools</source>
         <translation type="unfinished">Nástroje</translation>
     </message>
@@ -3607,7 +4084,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::MapObjectModel</name>
     <message>
-        <location filename="../src/tiled/mapobjectmodel.cpp" line="+200"/>
+        <location filename="../src/tiled/mapobjectmodel.cpp" line="+201"/>
         <source>Change Object Name</source>
         <translation>Přejmenovat objekt</translation>
     </message>
@@ -3617,7 +4094,7 @@ Please select specific format.</source>
         <translation>Změnit typ objektu</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+55"/>
         <source>Name</source>
         <translation>Jméno</translation>
     </message>
@@ -3645,12 +4122,12 @@ Please select specific format.</source>
         <translation>Procházet...</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>Choose the Maps Folder</source>
         <translation>Vybrat adresář s mapami</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+41"/>
         <source>Maps</source>
         <translation>Mapy</translation>
     </message>
@@ -3666,12 +4143,12 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::NewMapDialog</name>
     <message>
-        <location filename="../src/tiled/newmapdialog.cpp" line="-18"/>
+        <location filename="../src/tiled/newmapdialog.cpp" line="-19"/>
         <source>Save As...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <location filename="../src/tiled/propertybrowser.cpp" line="-17"/>
         <source>Orthogonal</source>
         <translation>Ortogonální</translation>
@@ -3695,7 +4172,7 @@ Please select specific format.</source>
         <translation>Šestiúhelníková (stupňovitá)</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+69"/>
         <source>Tile Layer 1</source>
         <translation>Vrstva dlaždic 1</translation>
     </message>
@@ -3710,7 +4187,7 @@ Please select specific format.</source>
         <translation>Každá dlaždicová vrstva v této mapě zabere %L1 GB paměti. Vrstva nebyla automaticky přidána.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+45"/>
         <source>%1 x %2 pixels</source>
         <translation>%1×%2px</translation>
     </message>
@@ -3718,7 +4195,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::NewTilesetDialog</name>
     <message>
-        <location filename="../src/tiled/newtilesetdialog.cpp" line="-41"/>
+        <location filename="../src/tiled/newtilesetdialog.cpp" line="-43"/>
         <location line="+7"/>
         <source>Error</source>
         <translation>Chyba</translation>
@@ -3734,7 +4211,7 @@ Please select specific format.</source>
         <translation>Pro danou velikost dlaždic, okraje a mezery nebyly nalezeny dlaždice!</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+47"/>
         <source>Tileset Image</source>
         <translation>Obrázek sady dlaždic</translation>
     </message>
@@ -3751,9 +4228,22 @@ Please select specific format.</source>
     </message>
 </context>
 <context>
+    <name>Tiled::Internal::NewsButton</name>
+    <message>
+        <location filename="../src/tiled/newsbutton.cpp" line="+45"/>
+        <source>News</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+69"/>
+        <source>News Archive</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Tiled::Internal::NoEditorWidget</name>
     <message>
-        <location filename="../src/tiled/noeditorwidget.ui" line="+45"/>
+        <location filename="../src/tiled/noeditorwidget.ui" line="+19"/>
         <source>&lt;font size=&quot;+2&quot;&gt;No Open Files&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3767,24 +4257,29 @@ Please select specific format.</source>
         <source>New Tileset...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+11"/>
+        <source>Open File...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Tiled::Internal::ObjectSelectionTool</name>
     <message>
-        <location filename="../src/tiled/objectselectiontool.cpp" line="+314"/>
-        <location line="+376"/>
+        <location filename="../src/tiled/objectselectiontool.cpp" line="+317"/>
+        <location line="+416"/>
         <source>Select Objects</source>
         <translation>Vybrat objekty</translation>
     </message>
     <message>
-        <location line="-374"/>
-        <location line="+375"/>
+        <location line="-414"/>
+        <location line="+415"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message numerus="yes">
-        <location line="-262"/>
-        <location line="+686"/>
+        <location line="-289"/>
+        <location line="+719"/>
         <source>Move %n Object(s)</source>
         <translation>
             <numerusform>Přesunout objekt</numerusform>
@@ -3793,7 +4288,7 @@ Please select specific format.</source>
         </translation>
     </message>
     <message>
-        <location line="-566"/>
+        <location line="-593"/>
         <source>Unnamed object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3813,7 +4308,7 @@ Please select specific format.</source>
         <translation type="unfinished">%1: %2 {1)?}</translation>
     </message>
     <message numerus="yes">
-        <location line="+645"/>
+        <location line="+673"/>
         <source>Rotate %n Object(s)</source>
         <translation>
             <numerusform>Otočení objektu</numerusform>
@@ -3822,7 +4317,7 @@ Please select specific format.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location line="+265"/>
+        <location line="+267"/>
         <source>Resize %n Object(s)</source>
         <translation>
             <numerusform>Změna velikosti objektu</numerusform>
@@ -3834,7 +4329,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::ObjectTypesEditor</name>
     <message>
-        <location filename="../src/tiled/objecttypeseditor.cpp" line="+227"/>
+        <location filename="../src/tiled/objecttypeseditor.cpp" line="+226"/>
         <source>Add Object Type</source>
         <translation type="unfinished">Přidat typ objektů</translation>
     </message>
@@ -3860,7 +4355,7 @@ Please select specific format.</source>
         <translation>Přejmenování vlastnosti</translation>
     </message>
     <message>
-        <location line="-264"/>
+        <location line="-266"/>
         <location line="+128"/>
         <source>Error Writing Object Types</source>
         <translation type="unfinished">Chyba při zápisu typů objektů</translation>
@@ -3900,7 +4395,7 @@ Please select specific format.</source>
         <translation type="unfinished">Exportovat typy objektů</translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+146"/>
         <source>Name:</source>
         <translation type="unfinished">Jméno:</translation>
     </message>
@@ -3908,7 +4403,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::ObjectTypesModel</name>
     <message>
-        <location filename="../src/tiled/objecttypesmodel.cpp" line="+59"/>
+        <location filename="../src/tiled/objecttypesmodel.cpp" line="+65"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
@@ -3921,7 +4416,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::ObjectsDock</name>
     <message>
-        <location filename="../src/tiled/objectsdock.cpp" line="+173"/>
+        <location filename="../src/tiled/objectsdock.cpp" line="+174"/>
         <source>Object Properties</source>
         <translation>Vlastnosti objektu</translation>
     </message>
@@ -3958,7 +4453,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::PatreonDialog</name>
     <message>
-        <location filename="../src/tiled/patreondialog.cpp" line="+47"/>
+        <location filename="../src/tiled/patreondialog.cpp" line="+49"/>
         <source>Remind me next week</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3986,8 +4481,8 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::PreferencesDialog</name>
     <message>
-        <location filename="../src/tiled/preferencesdialog.cpp" line="-135"/>
-        <location line="+132"/>
+        <location filename="../src/tiled/preferencesdialog.cpp" line="-153"/>
+        <location line="+150"/>
         <source>System default</source>
         <translation>Systémové nastavení</translation>
     </message>
@@ -4000,7 +4495,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::PropertiesDock</name>
     <message>
-        <location filename="../src/tiled/propertiesdock.cpp" line="+325"/>
+        <location filename="../src/tiled/propertiesdock.cpp" line="+313"/>
         <source>Name:</source>
         <translation>Jméno:</translation>
     </message>
@@ -4106,7 +4601,7 @@ Please select specific format.</source>
         <translation>Ručně</translation>
     </message>
     <message>
-        <location line="+667"/>
+        <location line="-1090"/>
         <source>Columns</source>
         <translation>Sloupců</translation>
     </message>
@@ -4116,27 +4611,32 @@ Please select specific format.</source>
         <translation>Zdroj</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+37"/>
         <source>Relative chance this tile will be picked</source>
         <translation>Relativní pravděpodobnost výběru dlaždice</translation>
     </message>
     <message>
-        <location line="+300"/>
+        <location line="+27"/>
+        <source>Wang Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+347"/>
         <source>Error Reading Tileset</source>
         <translation>Chyba při otevírání sady slaždic</translation>
     </message>
     <message>
-        <location line="+180"/>
+        <location line="+295"/>
         <source>Custom Properties</source>
         <translation>Vlastní vlastnosti</translation>
     </message>
     <message>
-        <location line="-735"/>
+        <location line="-949"/>
         <source>Map</source>
         <translation>Mapa</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+37"/>
         <source>Tile Layer Format</source>
         <translation>Formát vrstvy dlaždic</translation>
     </message>
@@ -4147,49 +4647,71 @@ Please select specific format.</source>
     </message>
     <message>
         <location line="+5"/>
-        <location line="+142"/>
+        <location line="+165"/>
         <source>Background Color</source>
         <translation>Barva pozadí</translation>
     </message>
     <message>
-        <location line="-127"/>
+        <location line="-133"/>
         <source>Object</source>
         <translation>Objekt</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <location line="+41"/>
-        <location line="+77"/>
-        <location line="+90"/>
+        <location line="+4"/>
+        <location line="+45"/>
+        <location line="+78"/>
+        <location line="+91"/>
+        <location line="+8"/>
+        <location line="+21"/>
         <source>Name</source>
         <translation>Jméno</translation>
     </message>
     <message>
-        <location line="-205"/>
-        <location line="+174"/>
+        <location line="-240"/>
+        <location line="+179"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location line="-171"/>
-        <location line="+36"/>
+        <location line="-175"/>
+        <location line="+39"/>
         <source>Visible</source>
         <translation>Viditelnost</translation>
     </message>
     <message>
-        <location line="-596"/>
-        <location line="+561"/>
+        <location line="-37"/>
+        <location line="+1199"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location line="-560"/>
-        <location line="+561"/>
+        <location line="-1198"/>
+        <location line="+1199"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location line="-559"/>
+        <location line="-986"/>
+        <source>Edge Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Corner Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Wang Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Change Infinite Property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+931"/>
         <source>Odd</source>
         <translation>Liché</translation>
     </message>
@@ -4199,39 +4721,44 @@ Please select specific format.</source>
         <translation>Sudé</translation>
     </message>
     <message>
-        <location line="+488"/>
-        <location line="+192"/>
+        <location line="-1293"/>
+        <location line="+216"/>
         <source>Orientation</source>
         <translation>Orientace</translation>
     </message>
     <message>
-        <location line="-187"/>
-        <location line="+70"/>
-        <location line="+167"/>
+        <location line="-211"/>
+        <location line="+92"/>
+        <location line="+170"/>
         <source>Width</source>
         <translation>Šířka</translation>
     </message>
     <message>
-        <location line="-236"/>
-        <location line="+70"/>
-        <location line="+167"/>
+        <location line="-261"/>
+        <location line="+92"/>
+        <location line="+170"/>
         <source>Height</source>
         <translation>Výška</translation>
     </message>
     <message>
-        <location line="-236"/>
-        <location line="+208"/>
+        <location line="-261"/>
+        <location line="+232"/>
         <source>Tile Width</source>
         <translation>Šířka dlaždice</translation>
     </message>
     <message>
-        <location line="-207"/>
-        <location line="+208"/>
+        <location line="-231"/>
+        <location line="+232"/>
         <source>Tile Height</source>
         <translation>Výška dlaždice</translation>
     </message>
     <message>
-        <location line="-206"/>
+        <location line="-231"/>
+        <source>Infinite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Tile Side Length (Hex)</source>
         <translation>Délka hrany šestiúhelníkové dlaždice</translation>
     </message>
@@ -4247,11 +4774,16 @@ Please select specific format.</source>
     </message>
     <message>
         <location line="+56"/>
+        <source>Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
         <source>Rotation</source>
         <translation>Otočení</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>Flipping</source>
         <translation>Zrcadlení</translation>
     </message>
@@ -4276,7 +4808,12 @@ Please select specific format.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+12"/>
+        <source>Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Opacity</source>
         <translation>Neprůhlednost</translation>
     </message>
@@ -4301,13 +4838,14 @@ Please select specific format.</source>
         <translation>Vrstva objektů</translation>
     </message>
     <message>
-        <location line="-30"/>
-        <location line="+33"/>
+        <location line="-32"/>
+        <location line="+35"/>
+        <location line="+176"/>
         <source>Color</source>
         <translation>Barva</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-171"/>
         <source>Drawing Order</source>
         <translation>Pořadí vykreslování</translation>
     </message>
@@ -4319,12 +4857,12 @@ Please select specific format.</source>
     <message>
         <location line="+5"/>
         <location line="+62"/>
-        <location line="+47"/>
+        <location line="+48"/>
         <source>Image</source>
         <translation>Obrázek</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-105"/>
         <location line="+66"/>
         <source>Transparent Color</source>
         <translation>Průhledná barva</translation>
@@ -4375,18 +4913,20 @@ Please select specific format.</source>
         <translation>Dlaždice</translation>
     </message>
     <message>
-        <location line="-174"/>
-        <location line="+175"/>
+        <location line="-180"/>
+        <location line="+46"/>
+        <location line="+135"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
+        <location line="+60"/>
         <source>Probability</source>
         <translation>Pravděpodobnost</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="-38"/>
         <source>Terrain</source>
         <translation>Terén</translation>
     </message>
@@ -4394,44 +4934,193 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::SelectSameTileTool</name>
     <message>
-        <location filename="../src/tiled/selectsametiletool.cpp" line="+33"/>
-        <location line="+62"/>
+        <location filename="../src/tiled/selectsametiletool.cpp" line="+31"/>
+        <location line="+26"/>
         <source>Select Same Tile</source>
         <translation>Výběr stejných dlaždic</translation>
     </message>
     <message>
-        <location line="-59"/>
-        <location line="+60"/>
+        <location line="-23"/>
+        <location line="+24"/>
         <source>S</source>
         <translation>S</translation>
     </message>
 </context>
 <context>
+    <name>Tiled::Internal::ShapeFillTool</name>
+    <message>
+        <location filename="../src/tiled/shapefilltool.cpp" line="+40"/>
+        <location line="+77"/>
+        <source>Shape Fill Tool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-74"/>
+        <location line="+75"/>
+        <source>P</source>
+        <translation type="unfinished">P</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Rectangle Fill</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Circle Fill</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tiled::Internal::StampActions</name>
+    <message>
+        <location filename="../src/tiled/stampactions.cpp" line="+48"/>
+        <location line="+25"/>
+        <source>Random Mode</source>
+        <translation type="unfinished">Náhodný mód</translation>
+    </message>
+    <message>
+        <location line="-24"/>
+        <location line="+31"/>
+        <source>D</source>
+        <translation type="unfinished">D</translation>
+    </message>
+    <message>
+        <location line="-26"/>
+        <location line="+20"/>
+        <source>Wang Fill Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Flip Horizontally</source>
+        <translation type="unfinished">Překlopit vodorovně</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Flip Vertically</source>
+        <translation type="unfinished">Překlopit svisle</translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/abstractobjecttool.cpp" line="-125"/>
+        <location filename="../src/tiled/stampactions.cpp" line="+1"/>
+        <source>Rotate Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../src/tiled/stampactions.cpp" line="+1"/>
+        <source>Rotate Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location filename="../src/tiled/stampactions.cpp" line="+3"/>
+        <source>X</source>
+        <translation type="unfinished">X</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../src/tiled/stampactions.cpp" line="+1"/>
+        <source>Y</source>
+        <translation type="unfinished">Y</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../src/tiled/stampactions.cpp" line="+1"/>
+        <source>Shift+Z</source>
+        <translation type="unfinished">Shift+Z</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../src/tiled/stampactions.cpp" line="+1"/>
+        <source>Z</source>
+        <translation type="unfinished">Z</translation>
+    </message>
+</context>
+<context>
     <name>Tiled::Internal::StampBrush</name>
     <message>
-        <location filename="../src/tiled/stampbrush.cpp" line="+41"/>
-        <location line="+127"/>
+        <location filename="../src/tiled/stampbrush.cpp" line="+49"/>
+        <location line="+158"/>
         <source>Stamp Brush</source>
         <translation>Razítkový štětec</translation>
     </message>
     <message>
-        <location line="-124"/>
-        <location line="+125"/>
+        <location line="-155"/>
+        <location line="+156"/>
         <source>B</source>
         <translation>B</translation>
     </message>
 </context>
 <context>
+    <name>Tiled::Internal::TemplatesDock</name>
+    <message>
+        <location filename="../src/tiled/templatesdock.cpp" line="+293"/>
+        <source>Open Tileset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <location line="+9"/>
+        <source>%1: Couldn&apos;t find &quot;%2&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Locate Tileset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+49"/>
+        <source>Choose the Templates Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Templates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Choose Templates Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>All Files (*)</source>
+        <translation type="unfinished">Všechny soubory (*)</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Locate External Tileset</source>
+        <translation type="unfinished">Najít externí sadu dlaždic</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Error Reading Tileset</source>
+        <translation type="unfinished">Chyba při otevírání sady slaždic</translation>
+    </message>
+</context>
+<context>
+    <name>Tiled::Internal::TemplatesView</name>
+    <message>
+        <location line="+90"/>
+        <source>Select All Instances</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Tiled::Internal::TerrainBrush</name>
     <message>
-        <location filename="../src/tiled/terrainbrush.cpp" line="+45"/>
-        <location line="+117"/>
+        <location filename="../src/tiled/terrainbrush.cpp" line="+48"/>
+        <location line="+120"/>
         <source>Terrain Brush</source>
         <translation>Terénový štětec</translation>
     </message>
     <message>
-        <location line="-114"/>
-        <location line="+115"/>
+        <location line="-117"/>
+        <location line="+118"/>
         <source>T</source>
         <translation>TT</translation>
     </message>
@@ -4439,7 +5128,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::TerrainDock</name>
     <message>
-        <location filename="../src/tiled/terraindock.cpp" line="+323"/>
+        <location filename="../src/tiled/terraindock.cpp" line="+338"/>
         <source>Terrains</source>
         <translation>Terény</translation>
     </message>
@@ -4458,11 +5147,21 @@ Please select specific format.</source>
         <source>Remove Terrain Type</source>
         <translation type="unfinished">Odstranit typ terénu</translation>
     </message>
+    <message>
+        <location line="+1"/>
+        <source>Move Terrain Type Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Move Terrain Type Down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Tiled::Internal::TerrainView</name>
     <message>
-        <location filename="../src/tiled/terrainview.cpp" line="+98"/>
+        <location filename="../src/tiled/terrainview.cpp" line="+112"/>
         <source>Terrain &amp;Properties...</source>
         <translation>Vlastnosti &amp;terénu...</translation>
     </message>
@@ -4484,39 +5183,34 @@ Please select specific format.</source>
     </message>
 </context>
 <context>
-    <name>Tiled::Internal::TileCollisionEditor</name>
+    <name>Tiled::Internal::TileCollisionDock</name>
     <message>
-        <location filename="../src/tiled/tilecollisioneditor.cpp" line="+254"/>
+        <location filename="../src/tiled/tilecollisiondock.cpp" line="-32"/>
         <source>Delete</source>
-        <translation>Smazat</translation>
+        <translation type="unfinished">Smazat</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Cut</source>
-        <translation>Vyjmout</translation>
-    </message>
-    <message>
-        <location line="+29"/>
-        <source>Tile Collision Editor</source>
-        <translation>Editor kolizí</translation>
+        <translation type="unfinished">Vyjmout</translation>
     </message>
 </context>
 <context>
     <name>Tiled::Internal::TileSelectionTool</name>
     <message>
         <location filename="../src/tiled/tileselectiontool.cpp" line="+36"/>
-        <location line="+118"/>
+        <location line="+106"/>
         <source>Rectangular Select</source>
         <translation>Obdélníkový výběr</translation>
     </message>
     <message>
-        <location line="-115"/>
-        <location line="+116"/>
+        <location line="-103"/>
+        <location line="+104"/>
         <source>R</source>
         <translation>R</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="-81"/>
         <source>%1, %2 - Rectangle: (%3 x %4)</source>
         <translation>%1, %2 – Obdélník: (%3×%4)</translation>
     </message>
@@ -4537,7 +5231,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::TileStampsDock</name>
     <message>
-        <location filename="../src/tiled/tilestampsdock.cpp" line="+194"/>
+        <location filename="../src/tiled/tilestampsdock.cpp" line="+196"/>
         <source>Delete Stamp</source>
         <translation>Odstranit razítko</translation>
     </message>
@@ -4590,7 +5284,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::TilesetDock</name>
     <message>
-        <location filename="../src/tiled/tilesetdock.cpp" line="+613"/>
+        <location filename="../src/tiled/tilesetdock.cpp" line="+578"/>
         <source>Remove Tileset</source>
         <translation>Odstranění sady dlaždic</translation>
     </message>
@@ -4605,7 +5299,7 @@ Please select specific format.</source>
         <translation>Odstranit tuto sadu dlaždic a všechny její dlaždice?</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+65"/>
         <source>Tilesets</source>
         <translation>Sada dlaždic</translation>
     </message>
@@ -4635,7 +5329,7 @@ Please select specific format.</source>
         <translation>&amp;Smazat sadu dlaždic</translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+193"/>
         <source>Error saving tileset: %1</source>
         <translation>Chyba při ukládání sady dlaždic: %1</translation>
     </message>
@@ -4649,7 +5343,7 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::TilesetDocument</name>
     <message>
-        <location filename="../src/tiled/tilesetdocument.cpp" line="+190"/>
+        <location filename="../src/tiled/tilesetdocument.cpp" line="+200"/>
         <source>untitled.tsx</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4657,32 +5351,32 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::TilesetEditor</name>
     <message>
-        <location filename="../src/tiled/tileseteditor.cpp" line="+198"/>
-        <location line="+277"/>
+        <location filename="../src/tiled/tileseteditor.cpp" line="-406"/>
+        <location line="+400"/>
         <source>Tileset</source>
         <translation type="unfinished">Sada dlaždic</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+21"/>
+        <location line="+22"/>
         <location line="+31"/>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Add Tiles</source>
         <translation type="unfinished">Přidání dlaždic</translation>
     </message>
     <message>
-        <location line="-69"/>
-        <location line="+170"/>
+        <location line="-71"/>
+        <location line="+189"/>
         <source>Remove Tiles</source>
         <translation type="unfinished">Odstranění dlaždic</translation>
     </message>
     <message>
-        <location line="-168"/>
-        <source>Edit &amp;Terrain Information</source>
-        <translation type="unfinished">Změnit informace o &amp;terénu</translation>
+        <location line="-188"/>
+        <source>Tile Animation Editor</source>
+        <translation type="unfinished">Editor animovaných dlaždic</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+49"/>
         <source>Apply this action to all tiles</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4697,12 +5391,12 @@ Please select specific format.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Could not load &quot;%1&quot;!</source>
         <translation type="unfinished">Nepodařilo se načíst &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+118"/>
         <source>Tiles to be removed are in use by open maps!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4712,15 +5406,20 @@ Please select specific format.</source>
         <translation type="unfinished">Odstranit je?</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+82"/>
         <source>New Terrain</source>
         <translation type="unfinished">Nový terén</translation>
+    </message>
+    <message>
+        <location line="+89"/>
+        <source>New Wang Set</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Tiled::Internal::TilesetParametersEdit</name>
     <message>
-        <location filename="../src/tiled/tilesetparametersedit.cpp" line="+49"/>
+        <location filename="../src/tiled/tilesetparametersedit.cpp" line="+48"/>
         <source>Edit...</source>
         <translation>Editovat</translation>
     </message>
@@ -4728,12 +5427,12 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::TilesetView</name>
     <message>
-        <location filename="../src/tiled/tilesetview.cpp" line="+687"/>
+        <location filename="../src/tiled/tilesetview.cpp" line="+1232"/>
         <source>Tile &amp;Properties...</source>
         <translation>&amp;Vlastnosti dlaždice...</translation>
     </message>
     <message>
-        <location line="-9"/>
+        <location line="-22"/>
         <source>Add Terrain Type</source>
         <translation>Přidat typ terénu</translation>
     </message>
@@ -4743,17 +5442,22 @@ Please select specific format.</source>
         <translation>Nastavit obrázek terénu</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+9"/>
+        <source>Set Wang Set Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Set Wang Color Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>&amp;Swap Tiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>&amp;Replace Tile of Selected Objects</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Show &amp;Grid</source>
         <translation>Zobrazit &amp;mřížku</translation>
     </message>
@@ -4761,17 +5465,17 @@ Please select specific format.</source>
 <context>
     <name>Tiled::Internal::TmxMapFormat</name>
     <message>
-        <location filename="../src/tiled/tmxmapformat.h" line="+64"/>
-        <source>Tiled map files (*.tmx)</source>
-        <translation>Dlaždicové mapy (*.tmx)</translation>
+        <location filename="../src/tiled/tmxmapformat.h" line="+66"/>
+        <source>Tiled map files (*.tmx *.xml)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Tiled::Internal::TsxTilesetFormat</name>
     <message>
         <location line="+28"/>
-        <source>Tiled tileset files (*.tsx)</source>
-        <translation>Sady dlaždic (*.tsx)</translation>
+        <source>Tiled tileset files (*.tsx *.xml)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4795,7 +5499,7 @@ Please select specific format.</source>
         <translation type="unfinished">%1 (%2)</translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+126"/>
         <source>Horizontal</source>
         <translation type="unfinished">Vodorovně</translation>
     </message>
@@ -4805,7 +5509,7 @@ Please select specific format.</source>
         <translation type="unfinished">Svisle</translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+114"/>
         <location line="+6"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
@@ -4839,32 +5543,130 @@ Please select specific format.</source>
     </message>
 </context>
 <context>
-    <name>Tmw::TmwPlugin</name>
+    <name>Tiled::Internal::WangBrush</name>
     <message>
-        <location filename="../src/plugins/tmw/tmwplugin.cpp" line="+47"/>
-        <source>Multiple collision layers found!</source>
-        <translation>Nalezeno více kolizních vrstev!</translation>
+        <location filename="../src/tiled/wangbrush.cpp" line="+108"/>
+        <location line="+65"/>
+        <source>Wang Brush</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>No collision layer found!</source>
-        <translation>Nebyla nalezena kolizní vrstva!</translation>
+        <location line="-62"/>
+        <location line="+63"/>
+        <source>G</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Could not open file for writing.</source>
-        <translation>Nepodařilo se otevřít soubor pro zápis.</translation>
+        <location line="+152"/>
+        <source>Missing wang tile transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tiled::Internal::WangColorModel</name>
+    <message>
+        <location filename="../src/tiled/wangcolormodel.cpp" line="+144"/>
+        <source>Edge Colors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
-        <source>TMW-eAthena collision files (*.wlk)</source>
-        <translation>Kolizní soubory TMW-eAthena (*.wlk)</translation>
+        <location line="+2"/>
+        <source>Corner Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tiled::Internal::WangColorView</name>
+    <message>
+        <location filename="../src/tiled/wangcolorview.cpp" line="+184"/>
+        <source>Pick Custom Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tiled::Internal::WangDock</name>
+    <message>
+        <location filename="../src/tiled/wangdock.cpp" line="+227"/>
+        <location line="+327"/>
+        <source>Patterns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-326"/>
+        <location line="+327"/>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-10"/>
+        <source>Wang Sets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Erase WangIds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Add Wang Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Remove Wang Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Add Edge Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Add Corner Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Remove Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tiled::Internal::WangSetView</name>
+    <message>
+        <location filename="../src/tiled/wangsetview.cpp" line="+105"/>
+        <source>Wang Set &amp;Properties...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tiled::Internal::XmlObjectTemplateFormat</name>
+    <message>
+        <location filename="../src/tiled/tmxmapformat.h" line="+27"/>
+        <source>Tiled template files (*.tx)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tiled::WorldManager</name>
+    <message>
+        <location filename="../src/libtiled/worldmanager.cpp" line="+109"/>
+        <source>Could not open file for reading.</source>
+        <translation type="unfinished">Nepodařilo se otevřít soubor pro čtení.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>JSON parse error at offset %1:
+%2.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TmxViewer</name>
     <message>
-        <location filename="../src/tmxviewer/tmxviewer.cpp" line="+182"/>
+        <location filename="../src/tmxviewer/tmxviewer.cpp" line="+180"/>
         <source>TMX Viewer</source>
         <translation>Prohlížeč souborů TMX</translation>
     </message>
@@ -4872,27 +5674,37 @@ Please select specific format.</source>
 <context>
     <name>Undo Commands</name>
     <message>
-        <location filename="../src/tiled/addremovelayer.h" line="+70"/>
+        <location filename="../src/tiled/addremovelayer.cpp" line="+66"/>
         <source>Add Layer</source>
         <translation>Přidání vrstvy</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+17"/>
         <source>Remove Layer</source>
         <translation>Odstranění vrstvy</translation>
     </message>
     <message>
-        <location filename="../src/tiled/addremovemapobject.cpp" line="+76"/>
+        <location filename="../src/tiled/addremovemapobject.cpp" line="+84"/>
         <source>Add Object</source>
         <translation>Přidání objektu</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+11"/>
+        <source>Add Objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
         <source>Remove Object</source>
         <translation>Odstranění objektu</translation>
     </message>
     <message>
-        <location filename="../src/tiled/changemapobject.cpp" line="+35"/>
+        <location line="+11"/>
+        <source>Remove Objects</source>
+        <translation type="unfinished">Odstranit objekty</translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/changemapobject.cpp" line="+38"/>
         <source>Change Object</source>
         <translation>Změna objektu</translation>
     </message>
@@ -4937,12 +5749,12 @@ Please select specific format.</source>
         <translation>Změna výběru</translation>
     </message>
     <message>
-        <location filename="../src/tiled/erasetiles.cpp" line="+39"/>
+        <location filename="../src/tiled/erasetiles.cpp" line="+37"/>
         <source>Erase</source>
         <translation>Vymazání</translation>
     </message>
     <message>
-        <location filename="../src/tiled/bucketfilltool.cpp" line="-30"/>
+        <location filename="../src/tiled/bucketfilltool.cpp" line="-17"/>
         <source>Fill Area</source>
         <translation>Výplň</translation>
     </message>
@@ -4953,13 +5765,12 @@ Please select specific format.</source>
         <translation>Posun objektu</translation>
     </message>
     <message>
-        <location filename="../src/tiled/offsetlayer.cpp" line="+43"/>
+        <location filename="../src/tiled/offsetlayer.cpp" line="+52"/>
         <source>Offset Layer</source>
         <translation>Posun vrstvy</translation>
     </message>
     <message>
-        <location filename="../src/tiled/painttilelayer.cpp" line="+51"/>
-        <location line="+22"/>
+        <location filename="../src/tiled/painttilelayer.cpp" line="+69"/>
         <source>Paint</source>
         <translation>Kreslení</translation>
     </message>
@@ -4979,18 +5790,18 @@ Please select specific format.</source>
         <translation>Změna velikosti mapy</translation>
     </message>
     <message>
-        <location filename="../src/tiled/resizemapobject.cpp" line="+40"/>
-        <location line="+12"/>
+        <location filename="../src/tiled/resizemapobject.cpp" line="+41"/>
+        <location line="+13"/>
         <source>Resize Object</source>
         <translation>Změna velikosti objektu</translation>
     </message>
     <message>
-        <location filename="../src/tiled/addremovetileset.cpp" line="+66"/>
+        <location filename="../src/tiled/addremovetileset.cpp" line="+62"/>
         <source>Add Tileset</source>
         <translation>Přidání sady dlaždic</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+16"/>
         <source>Remove Tileset</source>
         <translation>Odstranění sady dlaždic</translation>
     </message>
@@ -5010,7 +5821,7 @@ Please select specific format.</source>
         <translation>Změna sady dlaždic</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+36"/>
         <source>Change Columns</source>
         <translation>Změna počtu sloupců</translation>
     </message>
@@ -5020,12 +5831,12 @@ Please select specific format.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tiled/movemapobjecttogroup.cpp" line="+41"/>
+        <location filename="../src/tiled/movemapobjecttogroup.cpp" line="+42"/>
         <source>Move Object to Layer</source>
         <translation>Přesunutí objektu do vrstvy</translation>
     </message>
     <message>
-        <location filename="../src/tiled/movelayer.cpp" line="+40"/>
+        <location filename="../src/tiled/movelayer.cpp" line="+42"/>
         <source>Lower Layer</source>
         <translation>Posunutí vrstvy dolů</translation>
     </message>
@@ -5035,10 +5846,20 @@ Please select specific format.</source>
         <translation>Posunutí vrstvy nahoru</translation>
     </message>
     <message>
-        <location filename="../src/tiled/changepolygon.cpp" line="+40"/>
-        <location line="+12"/>
+        <location filename="../src/tiled/changepolygon.cpp" line="+42"/>
+        <location line="+13"/>
         <source>Change Polygon</source>
         <translation>Změna polygonu</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Toggle Polygon/Polyline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Split Polyline</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/tiled/addremoveterrain.cpp" line="+67"/>
@@ -5061,7 +5882,7 @@ Please select specific format.</source>
         <translation>Změna terénu dlaždice</translation>
     </message>
     <message>
-        <location filename="../src/tiled/tileseteditor.cpp" line="-621"/>
+        <location filename="../src/tiled/tileseteditor.cpp" line="-885"/>
         <source>Change Terrain Image</source>
         <translation>Změna obrázku terénu</translation>
     </message>
@@ -5076,6 +5897,16 @@ Please select specific format.</source>
         <translation>Skrytí vrstvy</translation>
     </message>
     <message>
+        <location line="+19"/>
+        <source>Lock Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Unlock Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+20"/>
         <source>Change Layer Opacity</source>
         <translation>Změna průhlednosti vrstvy</translation>
@@ -5086,7 +5917,7 @@ Please select specific format.</source>
         <translation>Změna posunutí vrstvy</translation>
     </message>
     <message>
-        <location filename="../src/tiled/changemapobject.cpp" line="+10"/>
+        <location filename="../src/tiled/changemapobject.cpp" line="+12"/>
         <source>Show Object</source>
         <translation>Zobrazení objektu</translation>
     </message>
@@ -5096,8 +5927,35 @@ Please select specific format.</source>
         <translation>Skrytí objektu</translation>
     </message>
     <message numerus="yes">
-        <location line="+48"/>
+        <location line="+59"/>
         <source>Change %n Object/s Tile</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location line="+65"/>
+        <source>Detach %n Template Instance(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location line="+39"/>
+        <source>Reset %n Instances</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location line="+46"/>
+        <source>Replace %n Object(s) With Template</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
@@ -5116,7 +5974,7 @@ Please select specific format.</source>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../src/tiled/tileseteditor.cpp" line="+518"/>
+        <location filename="../src/tiled/tileseteditor.cpp" line="+645"/>
         <source>Remove Tiles</source>
         <translation>Odstranění dlaždic</translation>
     </message>
@@ -5127,7 +5985,7 @@ Please select specific format.</source>
     </message>
     <message>
         <location filename="../src/tiled/changemapobjectsorder.cpp" line="+46"/>
-        <location filename="../src/tiled/raiselowerhelper.cpp" line="+67"/>
+        <location filename="../src/tiled/raiselowerhelper.cpp" line="+69"/>
         <source>Raise Object</source>
         <translation>Zvednutí objektu</translation>
     </message>
@@ -5158,13 +6016,13 @@ Please select specific format.</source>
         <translation>Snížení objektu úplně dolů</translation>
     </message>
     <message>
-        <location filename="../src/tiled/rotatemapobject.cpp" line="+40"/>
-        <location line="+12"/>
+        <location filename="../src/tiled/rotatemapobject.cpp" line="+41"/>
+        <location line="+13"/>
         <source>Rotate Object</source>
         <translation>Otočení objektu</translation>
     </message>
     <message>
-        <location filename="../src/tiled/changemapproperty.cpp" line="+41"/>
+        <location filename="../src/tiled/changemapproperty.cpp" line="+42"/>
         <source>Change Tile Width</source>
         <translation>Změna šířky dlaždice</translation>
     </message>
@@ -5172,6 +6030,11 @@ Please select specific format.</source>
         <location line="+4"/>
         <source>Change Tile Height</source>
         <translation>Změna výšky dlaždice</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Change Infinite Property</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5217,13 +6080,13 @@ Please select specific format.</source>
         <translation>Změna pravděpodobnosti dlaždice</translation>
     </message>
     <message>
-        <location filename="../src/tiled/adjusttileindexes.cpp" line="-133"/>
-        <location line="+86"/>
+        <location filename="../src/tiled/adjusttileindexes.cpp" line="-139"/>
+        <location line="+92"/>
         <source>Adjust Tile Indexes</source>
         <translation>Změna číslování dlaždic</translation>
     </message>
     <message>
-        <location filename="../src/tiled/changetileimagesource.cpp" line="+39"/>
+        <location filename="../src/tiled/changetileimagesource.cpp" line="+40"/>
         <source>Change Tile Image</source>
         <translation>Změna obrázku dlaždice</translation>
     </message>
@@ -5234,6 +6097,7 @@ Please select specific format.</source>
     </message>
     <message numerus="yes">
         <location filename="../src/tiled/flipmapobjects.cpp" line="+40"/>
+        <location filename="../src/tiled/propertybrowser.cpp" line="+197"/>
         <source>Flip %n Object(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -5252,17 +6116,201 @@ Please select specific format.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tiled/tilesetdocument.cpp" line="-145"/>
+        <location filename="../src/tiled/tilesetdocument.cpp" line="-153"/>
         <source>Reload Tileset</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/addremovewangset.cpp" line="+65"/>
+        <source>Add Wang Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Remove Wang Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/changetilewangid.cpp" line="+36"/>
+        <location line="+12"/>
+        <location line="+14"/>
+        <source>Change Tile WangId</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/changewangsetdata.cpp" line="+38"/>
+        <source>Change Wang Set edge count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+66"/>
+        <source>Change Wang Set corner count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+63"/>
+        <source>Remove Wang Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+90"/>
+        <source>Set Wang Set Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/moveterrain.cpp" line="+61"/>
+        <source>Move Terrain Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Move Terrain Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/renamewangset.cpp" line="+35"/>
+        <source>Change Wang Set Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/replacetemplate.cpp" line="+35"/>
+        <source>Replace Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tiled/shapefilltool.cpp" line="-20"/>
+        <source>Shape Fill</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/tiled/mapdocument.cpp" line="-683"/>
+        <source>Raise %n Layer(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location line="+27"/>
+        <source>Lower %n Layer(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/tiled/utils.cpp" line="+39"/>
+        <location filename="../src/tiled/utils.cpp" line="+43"/>
         <source>Image files</source>
         <translation>Soubory s obrázky</translation>
+    </message>
+    <message>
+        <location line="+223"/>
+        <source>Copy File Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Open Containing Folder...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="../src/tmxrasterizer/main.cpp" line="+52"/>
+        <source>Renders a Tiled map (TMX format) to an image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>The scale of the output image (default: 1).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The requested size in pixels at which a tile is rendered (overrides the --scale option).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <source>size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>The output image fits within a SIZE x SIZE square (overrides the --scale and --tilesize options).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Antialias edges of primitives.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Use nearest neighbour instead of smooth blending of pixels.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ignore all layer visibility flags in the map file, and render all layers in the output (default is to omit invisible layers).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Specifies a layer to omit from the output image. Can be repeated to hide multiple layers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Map file to render.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Image file to output.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Invalid size specified: &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Invalid tile size specified: &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Invalid scale specified: &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tmxviewer/main.cpp" line="+57"/>
+        <source>Displays a Tiled map (TMX format).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Map file to display.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

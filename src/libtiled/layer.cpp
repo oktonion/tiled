@@ -40,13 +40,15 @@ namespace Tiled {
 Layer::Layer(TypeFlag type, const QString &name, int x, int y) :
     Object(LayerType),
     mName(name),
+    mId(0),
     mLayerType(type),
     mX(x),
     mY(y),
-    mOpacity(1.0f),
+    mOpacity(1.0),
     mVisible(true),
     mMap(nullptr),
-    mParentLayer(nullptr)
+    mParentLayer(nullptr),
+    mLocked(false)
 {
 }
 
@@ -54,7 +56,7 @@ Layer::Layer(TypeFlag type, const QString &name, int x, int y) :
  * Returns the effective opacity, which is the opacity multiplied by the
  * opacity of any parent layers.
  */
-float Layer::effectiveOpacity() const
+qreal Layer::effectiveOpacity() const
 {
     auto opacity = mOpacity;
     const Layer *layer = this;
@@ -73,6 +75,14 @@ bool Layer::isHidden() const
     while (layer && layer->isVisible())
         layer = layer->parentLayer();
     return layer;      // encountered an invisible layer
+}
+
+bool Layer::isUnlocked() const
+{
+    const Layer *layer = this;
+    while (layer && !layer->isLocked())
+        layer = layer->parentLayer();
+    return !layer;
 }
 
 /**
@@ -139,6 +149,19 @@ QPointF Layer::totalOffset() const
 }
 
 /**
+ * Returns whether this layer can be merged down onto the layer below.
+ */
+bool Layer::canMergeDown() const
+{
+    const int index = siblingIndex();
+    if (index < 1)
+        return false;
+
+    Layer *lowerLayer = siblings().at(index - 1);
+    return lowerLayer->canMergeWith(this);
+}
+
+/**
  * A helper function for initializing the members of the given instance to
  * those of this layer. Used by subclasses when cloning.
  *
@@ -151,6 +174,7 @@ QPointF Layer::totalOffset() const
  */
 Layer *Layer::initializeClone(Layer *clone) const
 {
+    // mId is not copied, will be assigned when layer is added to a map
     clone->mOffset = mOffset;
     clone->mOpacity = mOpacity;
     clone->mVisible = mVisible;
@@ -184,39 +208,41 @@ Layer *LayerIterator::next()
     Layer *layer = mCurrentLayer;
     int index = mSiblingIndex;
 
-    if (!layer) {
-        // Traverse to the first layer of the map
-        if (mMap && index == -1 && mMap->layerCount() > 0) {
-            layer = mMap->layerAt(0);
-            index = 0;
-        } else {
-            return nullptr;
-        }
-    } else {
+    do {
+        Q_ASSERT(!layer || (index >= 0 && index < layer->siblings().size()));
+
         // Traverse to next sibling
         ++index;
-    }
 
-    const auto siblings = layer->siblings();
-
-    // Traverse to parent layer if last child
-    if (index == siblings.size()) {
-        layer = layer->parentLayer();
-        index = layer ? layer->siblingIndex() : -1;
-    } else {
-        layer = siblings.at(index);
-
-        // If next layer is a group, traverse to its first child
-        while (layer->isGroupLayer()) {
-            auto groupLayer = static_cast<GroupLayer*>(layer);
-            if (groupLayer->layerCount() > 0) {
-                index = 0;
-                layer = groupLayer->layerAt(0);
-            } else {
+        if (!layer) {
+            // Traverse to the first layer of the map
+            if (mMap && index < mMap->layerCount())
+                layer = mMap->layerAt(index);
+            else
                 break;
+        }
+
+        const auto siblings = layer->siblings();
+
+        // Traverse to parent layer if last child
+        if (index == siblings.size()) {
+            layer = layer->parentLayer();
+            index = layer ? layer->siblingIndex() : mMap->layerCount();
+        } else {
+            layer = siblings.at(index);
+
+            // If next layer is a group, traverse to its first child
+            while (layer->isGroupLayer()) {
+                auto groupLayer = static_cast<GroupLayer*>(layer);
+                if (groupLayer->layerCount() > 0) {
+                    index = 0;
+                    layer = groupLayer->layerAt(0);
+                } else {
+                    break;
+                }
             }
         }
-    }
+    } while (layer && !(layer->layerType() & mLayerTypes));
 
     mCurrentLayer = layer;
     mSiblingIndex = index;
@@ -227,39 +253,45 @@ Layer *LayerIterator::next()
 Layer *LayerIterator::previous()
 {
     Layer *layer = mCurrentLayer;
-    int index = mSiblingIndex - 1;
+    int index = mSiblingIndex;
 
-    if (!layer) {
-        // Traverse to the last layer of the map if at the end
-        if (mMap && index < mMap->layerCount() && mMap->layerCount() > 0) {
-            layer = mMap->layerAt(index);
-        } else {
-            return nullptr;
-        }
-    } else {
-        // Traverse down to last child if applicable
-        if (layer->isGroupLayer()) {
-            auto groupLayer = static_cast<GroupLayer*>(layer);
-            if (groupLayer->layerCount() > 0) {
-                mSiblingIndex = groupLayer->layerCount() - 1;
-                mCurrentLayer = groupLayer->layerAt(mSiblingIndex);
-                return mCurrentLayer;
-            }
-        }
+    do {
+        Q_ASSERT(!layer || (index >= 0 && index < layer->siblings().size()));
 
-        // Traverse to previous sibling (possibly of a parent)
-        do {
-            if (index >= 0) {
-                const auto siblings = layer->siblings();
-                layer = siblings.at(index);
+        // Traverse to previous sibling
+        --index;
+
+        if (!layer) {
+            // Traverse to the last layer of the map if at the end
+            if (mMap && index >= 0 && index < mMap->layerCount())
+                layer = mMap->layerAt(index);
+            else
                 break;
+        } else {
+            // Traverse down to last child if applicable
+            if (layer->isGroupLayer()) {
+                auto groupLayer = static_cast<GroupLayer*>(layer);
+                if (groupLayer->layerCount() > 0) {
+                    index = groupLayer->layerCount() - 1;
+                    layer = groupLayer->layerAt(index);
+                    continue;
+                }
             }
 
-            layer = layer->parentLayer();
-            if (layer)
-                index = layer->siblingIndex() - 1;
-        } while (layer);
-    }
+            // Traverse to previous sibling (possibly of a parent)
+            do {
+                if (index >= 0) {
+                    const auto siblings = layer->siblings();
+                    layer = siblings.at(index);
+                    break;
+                }
+
+                layer = layer->parentLayer();
+                if (layer)
+                    index = layer->siblingIndex() - 1;
+            } while (layer);
+        }
+    } while (layer && !(layer->layerType() & mLayerTypes));
 
     mCurrentLayer = layer;
     mSiblingIndex = index;
@@ -276,7 +308,15 @@ void LayerIterator::toFront()
 void LayerIterator::toBack()
 {
     mCurrentLayer = nullptr;
-    mSiblingIndex = mMap ? mMap->layerCount() : -1;
+    mSiblingIndex = mMap ? mMap->layerCount() : 0;
+}
+
+bool LayerIterator::operator==(const LayerIterator &other) const
+{
+    return mMap == other.mMap &&
+            mCurrentLayer == other.mCurrentLayer &&
+            mSiblingIndex == other.mSiblingIndex &&
+            mLayerTypes == other.mLayerTypes;
 }
 
 

@@ -22,6 +22,7 @@
 #define TILECOLLISIONDOCK_H
 
 #include "clipboardmanager.h"
+#include "mapdocument.h"
 
 #include <QDockWidget>
 
@@ -29,6 +30,7 @@ namespace Tiled {
 
 class Object;
 class Tile;
+class Tileset;
 
 namespace Internal {
 
@@ -49,17 +51,20 @@ class TileCollisionDock : public QDockWidget
 
 public:
     explicit TileCollisionDock(QWidget *parent = nullptr);
-    ~TileCollisionDock();
+    ~TileCollisionDock() override;
 
     void setTilesetDocument(TilesetDocument *tilesetDocument);
 
     MapDocument *dummyMapDocument() const;
 
-    bool canCopy() const;
+    ToolManager *toolManager() const;
+
+    bool hasSelectedObjects() const;
 
 signals:
     void dummyMapDocumentChanged(MapDocument *mapDocument);
-    void canCopyChanged();
+    void hasSelectedObjectsChanged();
+    void statusInfoChanged(const QString &info);
 
 public slots:
     void setTile(Tile *tile);
@@ -78,32 +83,38 @@ private slots:
     void setSelectedTool(AbstractTool*);
     void applyChanges();
     void tileObjectGroupChanged(Tile*);
+    void tilesetTileOffsetChanged(Tileset *tileset);
 
     void selectedObjectsChanged();
-    void setCanCopy(bool canCopy);
+    void setHasSelectedObjects(bool hasSelectedObjects);
 
 private:
     void retranslateUi();
 
     Tile *mTile;
     TilesetDocument *mTilesetDocument;
-    MapDocument *mDummyMapDocument;
+    MapDocumentPtr mDummyMapDocument;
     MapScene *mMapScene;
     MapView *mMapView;
     ToolManager *mToolManager;
     bool mApplyingChanges;
     bool mSynchronizing;
-    bool mCanCopy;
+    bool mHasSelectedObjects;
 };
 
 inline MapDocument *TileCollisionDock::dummyMapDocument() const
 {
-    return mDummyMapDocument;
+    return mDummyMapDocument.data();
 }
 
-inline bool TileCollisionDock::canCopy() const
+inline ToolManager *TileCollisionDock::toolManager() const
 {
-    return mCanCopy;
+    return mToolManager;
+}
+
+inline bool TileCollisionDock::hasSelectedObjects() const
+{
+    return mHasSelectedObjects;
 }
 
 } // namespace Internal

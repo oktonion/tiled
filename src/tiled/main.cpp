@@ -21,6 +21,7 @@
  */
 
 #include "commandlineparser.h"
+#include "exporthelper.h"
 #include "languagemanager.h"
 #include "mainwindow.h"
 #include "mapdocument.h"
@@ -33,6 +34,7 @@
 #include "stylehelper.h"
 #include "tiledapplication.h"
 #include "tileset.h"
+#include "tmxmapformat.h"
 #include "winsparkleautoupdater.h"
 
 #include <QDebug>
@@ -41,9 +43,7 @@
 #include <QJsonDocument>
 #include <QtPlugin>
 
-#ifdef TILED_LINUX_ARCHIVE
-#include <QSvgRenderer>
-#endif
+#include <memory>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -71,13 +71,19 @@ public:
     bool showedVersion;
     bool disableOpenGL;
     bool exportMap;
+    bool exportTileset;
     bool newInstance;
+    Preferences::ExportOptions exportOptions;
 
 private:
     void showVersion();
     void justQuit();
     void setDisableOpenGL();
     void setExportMap();
+    void setExportTileset();
+    void setExportEmbedTilesets();
+    void setExportDetachTemplateInstances();
+    void setExportResolveObjectTypesAndProperties();
     void showExportFormats();
     void startNewInstance();
 
@@ -94,6 +100,57 @@ private:
     }
 };
 
+/**
+ * Used during file export, attempt to determine the output file format
+ * from the command line parameters.
+ * Query errorMsg if result is null.
+ */
+template <typename T>
+inline T *findExportFormat(const QString *filter,
+                           const QString &targetFile,
+                           QString &errorMsg)
+{
+    T *outputFormat = nullptr;
+    const auto formats = PluginManager::objects<T>();
+
+    if (filter) {
+        // Find the format supporting the given filter
+        for (T *format : formats) {
+            if (!format->hasCapabilities(T::Write))
+                continue;
+            if (format->shortName().compare(*filter, Qt::CaseInsensitive) == 0) {
+                outputFormat = format;
+                break;
+            }
+        }
+        if (!outputFormat) {
+            errorMsg = QCoreApplication::translate("Command line", "Format not recognized (see --export-formats)");
+            return nullptr;
+        }
+    } else {
+        // Find the format based on target file extension
+        QString suffix = QFileInfo(targetFile).completeSuffix();
+        for (T *format : formats) {
+            if (!format->hasCapabilities(T::Write))
+                continue;
+            if (format->nameFilter().contains(suffix, Qt::CaseInsensitive)) {
+                if (outputFormat) {
+                    errorMsg = QCoreApplication::translate("Command line", "Non-unique file extension. Can't determine correct export format.");
+                    return nullptr;
+                }
+                outputFormat = format;
+            }
+        }
+        if (!outputFormat) {
+            errorMsg = QCoreApplication::translate("Command line", "No exporter found for target file.");
+            return nullptr;
+        }
+    }
+
+    return outputFormat;
+}
+
+
 } // anonymous namespace
 
 
@@ -102,6 +159,7 @@ CommandLineHandler::CommandLineHandler()
     , showedVersion(false)
     , disableOpenGL(false)
     , exportMap(false)
+    , exportTileset(false)
     , newInstance(false)
 {
     option<&CommandLineHandler::showVersion>(
@@ -122,12 +180,32 @@ CommandLineHandler::CommandLineHandler()
     option<&CommandLineHandler::setExportMap>(
                 QChar(),
                 QLatin1String("--export-map"),
-                tr("Export the specified tmx file to target"));
+                tr("Export the specified map file to target"));
+
+    option<&CommandLineHandler::setExportTileset>(
+                QChar(),
+                QLatin1String("--export-tileset"),
+                tr("Export the specified tileset file to target"));
 
     option<&CommandLineHandler::showExportFormats>(
                 QChar(),
                 QLatin1String("--export-formats"),
                 tr("Print a list of supported export formats"));
+
+    option<&CommandLineHandler::setExportEmbedTilesets>(
+                QChar(),
+                QLatin1String("--embed-tilesets"),
+                tr("Export the map with tilesets embedded"));
+
+    option<&CommandLineHandler::setExportDetachTemplateInstances>(
+                QChar(),
+                QLatin1String("--detach-templates"),
+                tr("Export the map or tileset with template instances detached"));
+
+    option<&CommandLineHandler::setExportResolveObjectTypesAndProperties>(
+                QChar(),
+                QLatin1String("--resolve-types-and-properties"),
+                tr("Export the map or tileset with types and properties resolved"));
 
     option<&CommandLineHandler::startNewInstance>(
                 QChar(),
@@ -160,16 +238,51 @@ void CommandLineHandler::setExportMap()
     exportMap = true;
 }
 
+void CommandLineHandler::setExportTileset()
+{
+    exportTileset = true;
+}
+
+void CommandLineHandler::setExportEmbedTilesets()
+{
+    exportOptions |= Preferences::EmbedTilesets;
+}
+
+void CommandLineHandler::setExportDetachTemplateInstances()
+{
+    exportOptions |= Preferences::DetachTemplateInstances;
+}
+
+void CommandLineHandler::setExportResolveObjectTypesAndProperties()
+{
+    exportOptions |= Preferences::ResolveObjectTypesAndProperties;
+}
+
 void CommandLineHandler::showExportFormats()
 {
     PluginManager::instance()->loadPlugins();
 
-    qWarning().noquote() << tr("Export formats:");
-    const auto formats = PluginManager::objects<MapFormat>();
-    for (MapFormat *format : formats) {
+    QStringList formats;
+    for (MapFormat *format : PluginManager::objects<MapFormat>()) {
         if (format->hasCapabilities(MapFormat::Write))
-            qWarning(" %s", qUtf8Printable(format->shortName()));
+            formats.append(format->shortName());
     }
+    formats.sort(Qt::CaseSensitive);
+
+    qWarning().noquote() << tr("Map export formats:");
+    for (const QString &name : formats)
+        qWarning(" %s", qUtf8Printable(name));
+
+    formats.clear();
+    for (TilesetFormat *format : PluginManager::objects<TilesetFormat>()) {
+        if (format->hasCapabilities(TilesetFormat::Write))
+            formats.append(format->shortName());
+    }
+    formats.sort(Qt::CaseSensitive);
+
+    qWarning().noquote() << tr("Tileset export formats:");
+    for (const QString &name : formats)
+        qWarning(" %s", qUtf8Printable(name));
 
     quit = true;
 }
@@ -197,15 +310,11 @@ int main(int argc, char *argv[])
 
     // Enable support for highres images (added in Qt 5.1, but off by default)
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    QGuiApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
+#endif
 
     TiledApplication a(argc, argv);
-
-#ifdef TILED_LINUX_ARCHIVE
-    // Workaround to get the SVG image format plugin to be shipped by
-    // linuxdeployqt (see probonopd/linuxdeployqt#82).
-    QSvgRenderer svgRenderer;
-    Q_UNUSED(svgRenderer)
-#endif
 
     a.setOrganizationDomain(QLatin1String("mapeditor.org"));
 #if defined(Q_OS_MAC) || defined(Q_OS_WIN)
@@ -225,6 +334,16 @@ int main(int argc, char *argv[])
     LanguageManager *languageManager = LanguageManager::instance();
     languageManager->installTranslators();
 
+    // Add the built-in file formats
+    TmxMapFormat tmxMapFormat;
+    PluginManager::addObject(&tmxMapFormat);
+
+    TsxTilesetFormat tsxTilesetFormat;
+    PluginManager::addObject(&tsxTilesetFormat);
+
+    XmlObjectTemplateFormat xmlObjectTemplateFormat;
+    PluginManager::addObject(&xmlObjectTemplateFormat);
+
     CommandLineHandler commandLine;
 
     if (!commandLine.parse(QCoreApplication::arguments()))
@@ -234,69 +353,86 @@ int main(int argc, char *argv[])
     if (commandLine.disableOpenGL)
         Preferences::instance()->setUseOpenGL(false);
 
-    PluginManager::instance()->loadPlugins();
-
     if (commandLine.exportMap) {
         // Get the path to the source file and target file
-        if (commandLine.filesToOpen().length() < 2) {
-            qWarning().noquote() << QCoreApplication::translate("Command line", "Export syntax is --export-map [format] <tmx file> <target file>");
+        if (commandLine.exportTileset || commandLine.filesToOpen().length() < 2) {
+            qWarning().noquote() << QCoreApplication::translate("Command line", "Export syntax is --export-map [format] <source> <target>");
             return 1;
         }
+
+        PluginManager::instance()->loadPlugins();
+
         int index = 0;
         const QString *filter = commandLine.filesToOpen().length() > 2 ? &commandLine.filesToOpen().at(index++) : nullptr;
         const QString &sourceFile = commandLine.filesToOpen().at(index++);
         const QString &targetFile = commandLine.filesToOpen().at(index++);
 
-        MapFormat *chosenFormat = nullptr;
-        auto formats = PluginManager::objects<MapFormat>();
-
-        if (filter) {
-            // Find the map format supporting the given filter
-            for (MapFormat *format : formats) {
-                if (!format->hasCapabilities(MapFormat::Write))
-                    continue;
-                if (format->shortName().compare(*filter, Qt::CaseInsensitive) == 0) {
-                    chosenFormat = format;
-                    break;
-                }
-            }
-            if (!chosenFormat) {
-                qWarning().noquote() << QCoreApplication::translate("Command line", "Format not recognized (see --export-formats)");
-                return 1;
-            }
-        } else {
-            // Find the map format based on target file extension
-            QString suffix = QFileInfo(targetFile).completeSuffix();
-            for (MapFormat *format : formats) {
-                if (!format->hasCapabilities(MapFormat::Write))
-                    continue;
-                if (format->nameFilter().contains(suffix, Qt::CaseInsensitive)) {
-                    if (chosenFormat) {
-                        qWarning().noquote() << QCoreApplication::translate("Command line", "Non-unique file extension. Can't determine correct export format.");
-                        return 1;
-                    }
-                    chosenFormat = format;
-                }
-            }
-            if (!chosenFormat) {
-                qWarning().noquote() << QCoreApplication::translate("Command line", "No exporter found for target file.");
-                return 1;
-            }
+        QString errorMsg;
+        MapFormat *outputFormat = findExportFormat<MapFormat>(filter, targetFile, errorMsg);
+        if (!outputFormat) {
+            Q_ASSERT(!errorMsg.isEmpty());
+            qWarning().noquote() << errorMsg;
+            return 1;
         }
 
         // Load the source file
-        MapReader reader;
-        QScopedPointer<Map> map(reader.readMap(sourceFile));
-        if (!map) {
+        const std::unique_ptr<Map> sourceMap(readMap(sourceFile, nullptr));
+        if (!sourceMap) {
             qWarning().noquote() << QCoreApplication::translate("Command line", "Failed to load source map.");
             return 1;
         }
 
+        // Apply export options
+        std::unique_ptr<Map> exportMap;
+        const Map *map = ExportHelper(commandLine.exportOptions).prepareExportMap(sourceMap.get(), exportMap);
+
         // Write out the file
-        bool success = chosenFormat->write(map.data(), targetFile);
+        bool success = outputFormat->write(map, targetFile);
 
         if (!success) {
             qWarning().noquote() << QCoreApplication::translate("Command line", "Failed to export map to target file.");
+            return 1;
+        }
+        return 0;
+    }
+
+    if (commandLine.exportTileset) {
+        // Get the path to the source file and target file
+        if (commandLine.filesToOpen().length() < 2) {
+            qWarning().noquote() << QCoreApplication::translate("Command line", "Export syntax is --export-tileset [format] <source> <target>");
+            return 1;
+        }
+
+        PluginManager::instance()->loadPlugins();
+
+        int index = 0;
+        const QString *filter = commandLine.filesToOpen().length() > 2 ? &commandLine.filesToOpen().at(index++) : nullptr;
+        const QString &sourceFile = commandLine.filesToOpen().at(index++);
+        const QString &targetFile = commandLine.filesToOpen().at(index++);
+
+        QString errorMsg;
+        TilesetFormat *outputFormat = findExportFormat<TilesetFormat>(filter, targetFile, errorMsg);
+        if (!outputFormat) {
+            Q_ASSERT(!errorMsg.isEmpty());
+            qWarning().noquote() << errorMsg;
+            return 1;
+        }
+
+        // Load the source file
+        SharedTileset sourceTileset(readTileset(sourceFile, nullptr));
+        if (!sourceTileset) {
+            qWarning().noquote() << QCoreApplication::translate("Command line", "Failed to load source tileset.");
+            return 1;
+        }
+
+        // Apply export options
+        SharedTileset exportTileset = ExportHelper(commandLine.exportOptions).prepareExportTileset(sourceTileset);
+
+        // Write out the file
+        bool success = outputFormat->write(*exportTileset, targetFile);
+
+        if (!success) {
+            qWarning().noquote() << QCoreApplication::translate("Command line", "Failed to export tileset to target file.");
             return 1;
         }
         return 0;
@@ -313,7 +449,7 @@ int main(int argc, char *argv[])
             return 0;
     }
 
-    QScopedPointer<AutoUpdater> updater;
+    std::unique_ptr<AutoUpdater> updater;
 #ifdef TILED_SPARKLE
 #if defined(Q_OS_MAC)
     updater.reset(new SparkleAutoUpdater);
@@ -330,8 +466,10 @@ int main(int argc, char *argv[])
     QWindowsWindowFunctions::setWindowActivationBehavior(QWindowsWindowFunctions::AlwaysActivateWindow);
 #endif
 
-    QObject::connect(&a, SIGNAL(fileOpenRequest(QString)),
-                     &w, SLOT(openFile(QString)));
+    QObject::connect(&a, &TiledApplication::fileOpenRequest,
+                     &w, [&] (const QString &file) { w.openFile(file); });
+
+    PluginManager::instance()->loadPlugins();
 
     if (!commandLine.filesToOpen().isEmpty()) {
         for (const QString &fileName : commandLine.filesToOpen())

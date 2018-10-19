@@ -22,13 +22,14 @@
 
 #include <QMenu>
 #include <QKeySequence>
-#include <QSignalMapper>
 #include <QMimeData>
+
+#include "qtcompat_p.h"
 
 using namespace Tiled;
 using namespace Tiled::Internal;
 
-const char *commandMimeType = "application/x-tiled-commandptr";
+static const char *commandMimeType = "application/x-tiled-commandptr";
 
 CommandDataModel::CommandDataModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -49,11 +50,13 @@ CommandDataModel::CommandDataModel(QObject *parent)
         // warning when clicking the command button for the first time
         Command command(false);
 #ifdef Q_OS_LINUX
-        command.command = QLatin1String("gedit %mapfile");
+        command.executable = QLatin1String("gedit");
+        command.arguments = QLatin1String("%mapfile");
 #elif defined(Q_OS_MAC)
-        command.command = QLatin1String("open -t %mapfile");
+        command.executable = QLatin1String("open");
+        command.arguments = QLatin1String("-t %mapfile");
 #endif
-        if (!command.command.isEmpty()) {
+        if (!command.executable.isEmpty()) {
             command.name = tr("Open in text editor");
             mCommands.push_back(command);
         }
@@ -67,7 +70,7 @@ void CommandDataModel::commit()
 {
     // Save command list
     QList<QVariant> commands;
-    foreach (const Command &command, mCommands)
+    for (const Command &command : qAsConst(mCommands))
         commands.append(command.toQVariant());
     mSettings.setValue(QLatin1String("commandList"), commands);
 }
@@ -86,7 +89,7 @@ bool CommandDataModel::removeRows(int row, int count, const QModelIndex &parent)
     if (row < 0 || row + count > mCommands.size())
         return false;
 
-    beginRemoveRows(parent, row, row + count);
+    beginRemoveRows(parent, row, row + count - 1);
     mCommands.erase(mCommands.begin() + row, mCommands.begin() + row + count);
     endRemoveRows();
 
@@ -277,50 +280,26 @@ QMenu *CommandDataModel::contextMenu(QWidget *parent, const QModelIndex &index)
         menu = new QMenu(parent);
 
         if (row > 0) {
-            QAction *action = menu->addAction(tr("Move Up"));
-            QSignalMapper *mapper = new QSignalMapper(action);
-            mapper->setMapping(action, row);
-            connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
-            connect(mapper, SIGNAL(mapped(int)), SLOT(moveUp(int)));
+            connect(menu->addAction(tr("Move Up")), &QAction::triggered,
+                    [=] { moveUp(row); });
         }
 
-        if (row+1 < mCommands.size()) {
-            QAction *action = menu->addAction(tr("Move Down"));
-            QSignalMapper *mapper = new QSignalMapper(action);
-            mapper->setMapping(action, row + 1);
-            connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
-            connect(mapper, SIGNAL(mapped(int)), SLOT(moveUp(int)));
+        if (row + 1 < mCommands.size()) {
+            connect(menu->addAction(tr("Move Down")), &QAction::triggered,
+                    [=] { moveUp(row + 1); });
         }
 
         menu->addSeparator();
-
-        {
-            QAction *action = menu->addAction(tr("Execute"));
-            QSignalMapper *mapper = new QSignalMapper(action);
-            mapper->setMapping(action, row);
-            connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
-            connect(mapper, SIGNAL(mapped(int)), SLOT(execute(int)));
-        }
-
+        connect(menu->addAction(tr("Execute")), &QAction::triggered,
+                [=] { execute(row); });
 #if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-        {
-            QAction *action = menu->addAction(tr("Execute in Terminal"));
-            QSignalMapper *mapper = new QSignalMapper(action);
-            mapper->setMapping(action, row);
-            connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
-            connect(mapper, SIGNAL(mapped(int)), SLOT(executeInTerminal(int)));
-        }
+        connect(menu->addAction(tr("Execute in Terminal")), &QAction::triggered,
+                [=] { executeInTerminal(row); });
 #endif
 
         menu->addSeparator();
-
-        {
-            QAction *action = menu->addAction(tr("Delete"));
-            QSignalMapper *mapper = new QSignalMapper(action);
-            mapper->setMapping(action, row);
-            connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
-            connect(mapper, SIGNAL(mapped(int)), SLOT(remove(int)));
-        }
+        connect(menu->addAction(tr("Delete")), &QAction::triggered,
+                [=] { remove(row); });
     }
 
     return menu;
@@ -400,7 +379,7 @@ bool CommandDataModel::dropMimeData(const QMimeData *data, Qt::DropAction, int,
                 if (dstRow == mCommands.size()) {
                     append(Command(addr->isEnabled,
                                    tr("%1 (copy)").arg(addr->name),
-                                   addr->command));
+                                   addr->executable, addr->arguments));
                     return true;
                 }
             }
@@ -423,12 +402,28 @@ bool CommandDataModel::dropMimeData(const QMimeData *data, Qt::DropAction, int,
     return false;
 }
 
-void CommandDataModel::setCommand(const QModelIndex &index, const QString &value)
+void CommandDataModel::setExecutable(const QModelIndex &index, const QString &value)
 {
     const bool isNormalRow = index.row() < mCommands.size();
 
     if (isNormalRow)
-        mCommands[index.row()].command = value;
+        mCommands[index.row()].executable = value;
+}
+
+void CommandDataModel::setArguments(const QModelIndex &index, const QString &value)
+{
+    const bool isNormalRow = index.row() < mCommands.size();
+
+    if (isNormalRow)
+        mCommands[index.row()].arguments = value;
+}
+
+void CommandDataModel::setWorkingDirectory(const QModelIndex &index, const QString &value)
+{
+    const bool isNormalRow = index.row() < mCommands.size();
+
+    if (isNormalRow)
+        mCommands[index.row()].workingDirectory = value;
 }
 
 void CommandDataModel::setShortcut(const QModelIndex &index, const QKeySequence &value)
@@ -441,6 +436,14 @@ void CommandDataModel::setShortcut(const QModelIndex &index, const QKeySequence 
         QModelIndex shortcutIndex = this->index(index.row(), ShortcutColumn);
         emit dataChanged(shortcutIndex, shortcutIndex);
     }
+}
+
+void CommandDataModel::setShowOutput(const QModelIndex &index, bool value)
+{
+    const bool isNormalRow = index.row() < mCommands.size();
+
+    if (isNormalRow)
+        mCommands[index.row()].showOutput = value;
 }
 
 void CommandDataModel::setSaveBeforeExecute(const QModelIndex &index, bool value)

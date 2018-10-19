@@ -22,11 +22,15 @@
 
 #include "clipboardmanager.h"
 #include "editor.h"
+#include "wangset.h"
 
 #include <QHash>
+#include <QList>
+#include <QUrl>
 
 class QAction;
 class QComboBox;
+class QLabel;
 class QMainWindow;
 class QStackedWidget;
 class QToolBar;
@@ -40,6 +44,7 @@ class Tileset;
 namespace Internal {
 
 class PropertiesDock;
+class TemplatesDock;
 class TerrainDock;
 class TileAnimationEditor;
 class TileCollisionDock;
@@ -47,6 +52,7 @@ class TilesetDocument;
 class TilesetEditorWindow;
 class TilesetView;
 class UndoDock;
+class WangDock;
 class Zoomable;
 
 class TilesetEditor : public Editor
@@ -73,6 +79,8 @@ public:
     StandardActions enabledStandardActions() const override;
     void performStandardAction(StandardAction action) override;
 
+    void resetLayout() override;
+
     TilesetView *currentTilesetView() const;
     Tileset *currentTileset() const;
     Zoomable *zoomable() const override;
@@ -81,6 +89,7 @@ public:
     QAction *removeTilesAction() const;
     QAction *editTerrainAction() const;
     QAction *editCollisionAction() const;
+    QAction *showAnimationEditor() const;
 
     TileAnimationEditor *tileAnimationEditor() const;
 
@@ -98,19 +107,33 @@ private slots:
     void updateTilesetView(Tileset *tileset);
 
     void openAddTilesDialog();
-    void addTiles(const QStringList &files);
+    void addTiles(const QList<QUrl> &urls);
     void removeTiles();
 
     void setEditTerrain(bool editTerrain);
     void currentTerrainChanged(const Terrain *terrain);
 
     void setEditCollision(bool editCollision);
+    void hasSelectedCollisionObjectsChanged();
+
+    void setEditWang(bool editWang);
 
     void updateAddRemoveActions();
 
     void addTerrainType();
     void removeTerrainType();
     void setTerrainImage(Tile *tile);
+
+    void currentWangSetChanged(WangSet *wangSet);
+    void currentWangIdChanged(WangId wangId);
+    void wangColorChanged(int color, bool edge);
+    void addWangSet();
+    void removeWangSet();
+    void setWangSetImage(Tile *tile);
+    void setWangColorImage(Tile *tile, bool isEdge, int index);
+    void setWangColorColor(WangColor *wangColor, const QColor &color);
+
+    void onAnimationEditorClosed();
 
 private:
     void setCurrentTile(Tile *tile);
@@ -124,12 +147,16 @@ private:
 
     QAction *mAddTiles;
     QAction *mRemoveTiles;
+    QAction *mShowAnimationEditor;
 
     PropertiesDock *mPropertiesDock;
     UndoDock *mUndoDock;
     TerrainDock *mTerrainDock;
     TileCollisionDock *mTileCollisionDock;
+    TemplatesDock *mTemplatesDock;
+    WangDock *mWangDock;
     QComboBox *mZoomComboBox;
+    QLabel *mStatusInfoLabel;
     TileAnimationEditor *mTileAnimationEditor;
 
     QHash<TilesetDocument*, TilesetView*> mViewForTileset;
@@ -146,6 +173,11 @@ inline QAction *TilesetEditor::addTilesAction() const
 inline QAction *TilesetEditor::removeTilesAction() const
 {
     return mRemoveTiles;
+}
+
+inline QAction *TilesetEditor::showAnimationEditor() const
+{
+    return mShowAnimationEditor;
 }
 
 inline TileAnimationEditor *TilesetEditor::tileAnimationEditor() const

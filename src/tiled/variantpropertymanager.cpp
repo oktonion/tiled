@@ -41,10 +41,6 @@ class AlignmentPropertyType {};
 Q_DECLARE_METATYPE(Tiled::Internal::TilesetParametersPropertyType)
 Q_DECLARE_METATYPE(Tiled::Internal::AlignmentPropertyType)
 
-#if QT_VERSION < 0x050500
-Q_DECLARE_METATYPE(Qt::Alignment)
-#endif
-
 namespace Tiled {
 namespace Internal {
 
@@ -150,15 +146,19 @@ QString VariantPropertyManager::valueText(const QtProperty *property) const
 
         if (typeId == filePathTypeId()) {
             FilePath filePath = value.value<FilePath>();
-            QString path = filePath.absolutePath;
-            if (path.endsWith(QLatin1Char('/')))
-                path.chop(1);
-            return QFileInfo(path).fileName();
+            QString fileName = filePath.url.fileName();
+            if (fileName.isEmpty()) {
+                QString path = filePath.url.toLocalFile();
+                if (path.endsWith(QLatin1Char('/')))
+                    path.chop(1);
+                fileName = QFileInfo(path).fileName();
+            }
+            return fileName;
         }
 
         if (typeId == tilesetParametersTypeId()) {
             if (TilesetDocument *tilesetDocument = value.value<TilesetDocument*>())
-                return QFileInfo(tilesetDocument->tileset()->imageSource()).fileName();
+                return tilesetDocument->tileset()->imageSource().fileName();
         }
 
         return value.toString();
@@ -185,12 +185,15 @@ QIcon VariantPropertyManager::valueIcon(const QtProperty *property) const
         QString filePath;
         int typeId = propertyType(property);
 
-        if (typeId == filePathTypeId())
-            filePath = value.value<FilePath>().absolutePath;
+        // TODO: Needs a special icon for remote files
+        if (typeId == filePathTypeId()) {
+            const FilePath fp = value.value<FilePath>();
+            filePath = fp.url.toLocalFile();
+        }
 
         if (typeId == tilesetParametersTypeId()) {
             if (TilesetDocument *tilesetDocument = value.value<TilesetDocument*>())
-                filePath = tilesetDocument->tileset()->imageSource();
+                filePath = tilesetDocument->tileset()->imageSource().toLocalFile();
         }
 
         // TODO: This assumes the file path is an image reference. It should be
@@ -316,6 +319,7 @@ void VariantPropertyManager::uninitializeProperty(QtProperty *property)
 {
     mValues.remove(property);
     mStringAttributes.remove(property);
+    m_alignValues.remove(property);
 
     QtProperty *alignH = m_propertyToAlignH.value(property);
     if (alignH) {

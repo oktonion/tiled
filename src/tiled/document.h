@@ -24,6 +24,8 @@
 
 #include <QDateTime>
 #include <QObject>
+#include <QPointer>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 
@@ -40,7 +42,8 @@ namespace Internal {
 /**
  * Keeps track of a file and its undo history.
  */
-class Document : public QObject
+class Document : public QObject,
+                 public QEnableSharedFromThis<Document>
 {
     Q_OBJECT
 
@@ -56,6 +59,7 @@ public:
     Document(DocumentType type,
              const QString &fileName = QString(),
              QObject *parent = nullptr);
+    ~Document() override;
 
     DocumentType type() const { return mType; }
 
@@ -98,6 +102,17 @@ public:
     bool ignoreBrokenLinks() const;
     void setIgnoreBrokenLinks(bool ignoreBrokenLinks);
 
+    bool changedOnDisk() const;
+    void setChangedOnDisk(bool changedOnDisk);
+
+    QString lastExportFileName() const;
+    void setLastExportFileName(const QString &fileName);
+
+    virtual FileFormat *exportFormat() const = 0;
+    virtual void setExportFormat(FileFormat *format) = 0;
+
+    static const QList<Document*> &documentInstances();
+
 signals:
     void saved();
 
@@ -129,7 +144,13 @@ protected:
 
     Object *mCurrentObject;             /**< Current properties object. */
 
+    bool mChangedOnDisk;
     bool mIgnoreBrokenLinks;
+
+    QString mLastExportFileName;
+
+private:
+    static QList<Document*> sDocumentInstances;
 };
 
 
@@ -151,6 +172,28 @@ inline bool Document::ignoreBrokenLinks() const
 {
     return mIgnoreBrokenLinks;
 }
+
+inline bool Document::changedOnDisk() const
+{
+    return mChangedOnDisk;
+}
+
+inline QString Document::lastExportFileName() const
+{
+    return mLastExportFileName;
+}
+
+inline void Document::setLastExportFileName(const QString &fileName)
+{
+    mLastExportFileName = fileName;
+}
+
+inline const QList<Document *> &Document::documentInstances()
+{
+    return sDocumentInstances;
+}
+
+using DocumentPtr = QSharedPointer<Document>;
 
 } // namespace Internal
 } // namespace Tiled

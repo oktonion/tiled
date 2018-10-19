@@ -74,16 +74,10 @@ Product {
                 );
             }
 
-            if (Qt.core.versionMinor < 4) {
-                list.push("Qt5OpenGL" + postfix);
-            }
-
             if (qbs.targetOS.contains("windows")) {
-                if (Qt.core.versionMinor <= 4) {
-                    list.push("icuin53.dll",
-                              "icuuc53.dll",
-                              "icudt53.dll");
-                } else if (Qt.core.versionMinor < 7) {
+                if (Qt.core.versionMinor < 7 &&
+                        !(Qt.core.versionMinor == 6 &&
+                          Qt.core.versionPatch >= 3)) {
                     list.push("icuin54.dll",
                               "icuuc54.dll",
                               "icudt54.dll");
@@ -275,6 +269,24 @@ Product {
                 ]
             }
         }
+        qbs.install: true
+        qbs.installDir: ""
+    }
+
+    Group {
+        name: "OpenSSL DLLs"
+        condition: qbs.targetOS.contains("windows") && File.exists(prefix)
+
+        prefix: {
+            if (qbs.architecture === "x86_64")
+                return "C:/OpenSSL-Win64/"
+            else
+                return "C:/OpenSSL-Win32/"
+        }
+        files: [
+            "libeay32.dll",
+            "ssleay32.dll",
+        ]
         qbs.install: true
         qbs.installDir: ""
     }
